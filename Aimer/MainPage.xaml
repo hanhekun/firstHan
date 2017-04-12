@@ -8,6 +8,13 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <Button x:Name="Button" Width="1000" Height="100" Content="Click" Click="Button_Click"></Button>
+        <StackPanel x:Name="scenButtonPanel">
+            
+        </StackPanel>
+        <StackPanel x:Name="ImgButtonPanel">
+            
+        </StackPanel>
     </Grid>
+    
 </Page>
