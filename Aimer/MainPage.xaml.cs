@@ -85,20 +85,25 @@ namespace Aimer
         
         private async void connectbutton_ClickAsync(object sender, RoutedEventArgs e)
         {
+            TextBox TBox = IP;
+            var Ip = TBox.Text;
+            
             try
             {
-                Windows.Networking.HostName serverHost = new Windows.Networking.HostName("localhost");
+                Windows.Networking.Sockets.StreamSocket socket = new Windows.Networking.Sockets.StreamSocket();
+
+                Windows.Networking.HostName serverHost = new Windows.Networking.HostName(Ip);
 
                 //Every protocol typically has a standard port number. For example HTTP is typically 80, FTP is 20 and 21, etc.
                 //For the echo server/client application we will use a random port 1337.
                 string serverPort = "1337";
                 await socket.ConnectAsync(serverHost, serverPort);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
-            
+
 
             blue.IsEnabled = true;
             red.IsEnabled = true;

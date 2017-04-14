@@ -14,7 +14,7 @@
             <Button x:Name="yellow" Content="Yellow" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="211" Height="90" Margin="0,20,0,0" Click="green_Click" IsEnabled="False"/>
             <StackPanel Height="52" Orientation="Horizontal" Margin="30,30,10,30">
                 <TextBlock TextWrapping="Wrap" Text="Server:"  Width="68"/>
-                <TextBox TextWrapping="Wrap" Text="" Margin="0,0,0,20" Width="218"/>
+                <TextBox TextWrapping="Wrap" Text="" Margin="0,0,0,20" Width="218" x:Name="IP"/>
             </StackPanel>
             <Button x:Name="connectbutton"  Content="Connect" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="52" Click="connectbutton_ClickAsync" />
 
