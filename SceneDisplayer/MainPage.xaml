@@ -1,0 +1,17 @@
+﻿<Page
+    x:Class="SceneDisplayer.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SceneDisplayer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+      
+        <Rectangle Visibility="Collapsed" Grid.Row="0" Grid.Column="0" Width="40" Height="40" Fill="Red" Name="red" Margin="64,164,50,50" ></Rectangle>
+        <Rectangle  Width="40" Height="40" Fill="Blue" Name="blue" Margin="64,164,50,50" Grid.Row="1" Grid.Column="1" Visibility="Collapsed"></Rectangle>
+        <Rectangle Width="40" Height="40" Fill="Yellow" Name="yellow" Margin="64,164,50,50" Grid.Row="1" Grid.Column="1" Visibility="Collapsed"></Rectangle>
+
+    </Grid>
+</Page>
