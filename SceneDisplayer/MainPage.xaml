@@ -8,10 +8,12 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-      
-        <Rectangle Visibility="Collapsed" Grid.Row="0" Grid.Column="0" Width="40" Height="40" Fill="Red" Name="red" Margin="64,164,50,50" ></Rectangle>
-        <Rectangle  Width="40" Height="40" Fill="Blue" Name="blue" Margin="64,164,50,50" Grid.Row="1" Grid.Column="1" Visibility="Collapsed"></Rectangle>
-        <Rectangle Width="40" Height="40" Fill="Yellow" Name="yellow" Margin="64,164,50,50" Grid.Row="1" Grid.Column="1" Visibility="Collapsed"></Rectangle>
+        <StackPanel  Orientation="Vertical" Height="600" VerticalAlignment="Bottom">
+
+            <Rectangle Visibility="Collapsed" Width="40" Height="40" Fill="Red" x:Name="red" />
+            <Rectangle  Width="40" Height="40" Fill="Blue" x:Name="blue" Visibility="Collapsed"/>
+            <Rectangle Width="40" Height="40" Fill="Yellow" x:Name="yellow" Visibility="Collapsed"/>
+        </StackPanel>
 
     </Grid>
 </Page>

@@ -22,10 +22,32 @@ namespace SceneDisplayer
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        string request;
+        private bool listening;
+
         public MainPage()
         {
             this.InitializeComponent();
+            listening = true;
             this.CreateServerAsync();
+        }
+
+        private void appear()
+        {
+
+            switch (request)
+            {
+                case "red":
+                    red.Visibility = Visibility.Visible;
+                    break;
+                case "blue":
+                    blue.Visibility = Visibility.Visible;
+                    break;
+                case "yellow":
+                    yellow.Visibility = Visibility.Visible;
+                    break;
+
+            }
         }
 
         private async System.Threading.Tasks.Task CreateServerAsync()
@@ -46,6 +68,7 @@ namespace SceneDisplayer
                 //Handle exception.
             }
         }
+        
 
         private async void SocketListener_ConnectionReceived(Windows.Networking.Sockets.StreamSocketListener sender,
     Windows.Networking.Sockets.StreamSocketListenerConnectionReceivedEventArgs args)
@@ -53,14 +76,15 @@ namespace SceneDisplayer
             //Read line from the remote client.
             Stream inStream = args.Socket.InputStream.AsStreamForRead();
             StreamReader reader = new StreamReader(inStream);
-            string request = await reader.ReadLineAsync();
+            while(listening)
+            {
+                request = await reader.ReadLineAsync();
 
-            //Send the line back to the remote client.
-            Stream outStream = args.Socket.OutputStream.AsStreamForWrite();
-            StreamWriter writer = new StreamWriter(outStream);
-            await writer.WriteLineAsync(request);
-            await writer.FlushAsync();
+                await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, appear);
+            }
         }
+
+    
 
     }
 
