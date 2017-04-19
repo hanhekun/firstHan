@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetroLog;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,6 +31,7 @@ namespace Aimer
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            GlobalCrashHandler.Configure();
         }
 
         /// <summary>

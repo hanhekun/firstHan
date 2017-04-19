@@ -18,6 +18,7 @@ using Newtonsoft.Json.Converters;
 using System.Data;
 using Newtonsoft.Json;
 using Windows.UI.Xaml.Media.Imaging;
+using MetroLog;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -28,6 +29,7 @@ namespace Aimer
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MainPage>();
         string request;
         Windows.Networking.Sockets.StreamSocket socket = new Windows.Networking.Sockets.StreamSocket();
         public MainPage()
@@ -35,7 +37,8 @@ namespace Aimer
             this.InitializeComponent();
             this.Loaded += (s, e) =>
              {
-                 frame.Navigate(typeof(WebPage));
+                 Log.Info("Loaded");
+                 //frame.Navigate(typeof(VerticalPage));
              };
         }
 
@@ -53,6 +56,7 @@ namespace Aimer
 
         private async void blue_Click(object sender, RoutedEventArgs e)
         {
+           
             Button btn = (Button)sender;
             request = btn.Name;
             //Write data to the echo server.
