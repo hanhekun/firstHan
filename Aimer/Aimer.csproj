@@ -99,11 +99,18 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ScenButton.xaml.cs">
+      <DependentUpon>ScenButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SceneButtonEventArgs.cs" />
+    <Compile Include="SceneItem.xaml.cs">
+      <DependentUpon>SceneItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SecondSceneControl.xaml.cs">
+      <DependentUpon>SecondSceneControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VerticalPage.xaml.cs">
       <DependentUpon>VerticalPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WebPage.xaml.cs">
-      <DependentUpon>WebPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -117,6 +124,18 @@
     <None Include="Aimer_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Images\quan.png" />
+    <Content Include="Assets\Images\sceneimagebg.png" />
+    <Content Include="Assets\Images\secondbg.png" />
+    <Content Include="Assets\Images\selectborder.png" />
+    <Content Include="Assets\Images\x.png" />
+    <Content Include="Assets\Images\嘴唇.png" />
+    <Content Include="Assets\Images\床.png" />
+    <Content Include="Assets\Images\情景选择.png" />
+    <Content Include="Assets\Images\指南针.png" />
+    <Content Include="Assets\Images\爱心.png" />
+    <Content Include="Assets\Images\男士.png" />
+    <Content Include="Assets\Images\飞机.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -131,11 +150,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="VerticalPage.xaml">
+    <Page Include="ScenButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WebPage.xaml">
+    <Page Include="SceneItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SecondSceneControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VerticalPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

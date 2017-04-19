@@ -1,0 +1,25 @@
+﻿<UserControl
+    x:Class="Aimer.SecondSceneControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Aimer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Height="215"
+    Width="743">
+
+    <Grid>
+        <Image Source="Assets/Images/secondbg.png" Width="743" Height="215"/>
+        <StackPanel x:Name="scenePanel" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+
+        </StackPanel>
+        <Button x:Name="close" HorizontalAlignment="Right" VerticalAlignment="Top"  Click="close_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Image x:Name="ContentPresenter" Source="Assets/Images/x.png" Width="24" Height="27" Margin="10"/>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</UserControl>

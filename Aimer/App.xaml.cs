@@ -31,7 +31,7 @@ namespace Aimer
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            GlobalCrashHandler.Configure();
+           // GlobalCrashHandler.Configure();
         }
 
         /// <summary>

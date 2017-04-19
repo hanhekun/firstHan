@@ -35,13 +35,26 @@ namespace Aimer
         public MainPage()
         {
             this.InitializeComponent();
-            this.Loaded += (s, e) =>
+            this.Loaded += async (s, e) =>
              {
+                 FittingRoomClient room = new FittingRoomClient();
+                 var data = await room.GetScenesAsyc();
+                 var data2 = await room.GetGoodsScenesAsyc();
                  Log.Info("Loaded");
-                 //frame.Navigate(typeof(VerticalPage));
+                 frame.Navigate(typeof(VerticalPage));
              };
+            //this.Loaded += getDataAsync();
         }
 
+        //private async RoutedEventHandler getDataAsync(object sender, RoutedEventArgs e)
+        //{
+        //    FittingRoomClient room = new FittingRoomClient();
+        //    var data = await room.GetScenesAsyc();
+        //    var data2 = await room.GetGoodsScenesAsyc();
+        //    Log.Info("Loaded");
+        //    frame.Navigate(typeof(VerticalPage));
+        //    return ;
+        //}
         private async void red_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
