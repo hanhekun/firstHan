@@ -14,7 +14,7 @@
             <StackPanel  Orientation="Vertical" BorderThickness="0,0,0,0" Visibility="Visible">
                 <StackPanel Height="52" Orientation="Horizontal" Margin="30,30,10,30">
                     <TextBlock TextWrapping="Wrap" Text="Server:"  Width="68"/>
-                    <TextBox TextWrapping="Wrap" Text="192.168.1.116" Margin="0,0,0,20" Width="218" x:Name="IP" />
+                    <TextBox TextWrapping="Wrap" Text="192.168.1.108" Margin="0,0,0,20" Width="218" x:Name="IP" />
                 </StackPanel>
 
                 <Button x:Name="connectbutton"  Content="Connect" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="52" Click="connectbutton_ClickAsync" />

@@ -1,4 +1,5 @@
 ﻿using Aimer.SDK;
+using MetroLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,6 +21,8 @@ namespace Aimer
 {
     public sealed partial class SecondSceneControl : UserControl
     {
+        private ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<SecondSceneControl>();
+
         public SecondSceneControl()
         {
             this.InitializeComponent();
@@ -90,10 +93,17 @@ namespace Aimer
                 item.Select(index);
                 Windows.Networking.Sockets.StreamSocket socket = new Windows.Networking.Sockets.StreamSocket();
                 Stream streamOut = socket.OutputStream.AsStreamForWrite();
-                StreamWriter writer = new StreamWriter(streamOut);
+                var writer = MainPage.Writer;
+                try
+                {
+                    await writer.WriteLineAsync($"scene,1,1");
+                    await writer.FlushAsync();
+                }
+                catch(Exception ex)
+                {
+                    Log.Error("Send command error", ex);
+                }
 
-                await writer.WriteLineAsync("qqq");
-                await writer.FlushAsync();
             }
         }
     }
