@@ -22,6 +22,7 @@ namespace Aimer
     public sealed partial class SecondSceneControl : UserControl
     {
         private ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<SecondSceneControl>();
+        private string mSceneId;
 
         public SecondSceneControl()
         {
@@ -43,9 +44,10 @@ namespace Aimer
             this.Visibility = Visibility.Collapsed;
         }
 
-        public void SetData(Scene scene)
+        public void SetData(Scene scene, string sceneId)
         {
             RemoveListener();
+            mSceneId = sceneId; 
             scenePanel.Children.Clear();
             Thickness margin = new Thickness(0, 0, 20, 0);
             SceneItem item1 = new SceneItem();            
@@ -96,7 +98,7 @@ namespace Aimer
                 var writer = MainPage.Writer;
                 try
                 {
-                    await writer.WriteLineAsync($"scene,1,1");
+                    await writer.WriteLineAsync($"scene,{mSceneId},{index}");
                     await writer.FlushAsync();
                 }
                 catch(Exception ex)

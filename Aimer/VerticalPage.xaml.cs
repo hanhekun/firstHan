@@ -100,7 +100,7 @@ namespace Aimer
         {
             SceneButtonEventArgs args = e as SceneButtonEventArgs;
             Scene selectedScene = mAllScens[args.SceneId];
-            secondSceneControl.SetData(selectedScene);
+            secondSceneControl.SetData(selectedScene, args.SceneId);
             secondSceneControl.Show();
 
         }
