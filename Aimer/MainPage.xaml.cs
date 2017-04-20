@@ -30,6 +30,7 @@ namespace Aimer
     public sealed partial class MainPage : Page
     {
         private ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MainPage>();
+        public static StreamWriter Writer;
         string request;
         Windows.Networking.Sockets.StreamSocket socket = new Windows.Networking.Sockets.StreamSocket();
         public MainPage()
@@ -67,7 +68,8 @@ namespace Aimer
                 string serverPort = "1337";
                 await socket.ConnectAsync(serverHost, serverPort);
                 ConnectSucess.Visibility = Visibility;
-
+                Stream streamOut = socket.OutputStream.AsStreamForWrite();
+                Writer = new StreamWriter(streamOut);
             }
             catch (Exception ex)
             {

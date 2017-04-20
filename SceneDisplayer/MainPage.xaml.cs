@@ -133,7 +133,7 @@ namespace SceneDisplayer
         {
             string[] data = request.Split(new char[] { ',' });
             string action = data[0];
-            if (action == "")
+            if (action == "scene")
             {
                 int sceneId=int.Parse(data[1]);
                 int scenIndex = int.Parse(data[2]);
