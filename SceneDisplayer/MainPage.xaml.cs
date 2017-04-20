@@ -40,6 +40,7 @@ namespace SceneDisplayer
         {
             this.InitializeComponent();
             listening = true;
+            CreateServerAsync();
             mTimer.Tick += MTimer_Tick;
             mTimer.Interval = TimeSpan.FromSeconds(5);
         }
@@ -68,7 +69,7 @@ namespace SceneDisplayer
         {
             base.OnNavigatedTo(e);
             GetAllScenes();
-            CreateServerAsync();
+          
         }
 
         private async void GetAllScenes()
