@@ -66,14 +66,13 @@ namespace Aimer
                 //For the echo server/client application we will use a random port 1337.
                 string serverPort = "1337";
                 await socket.ConnectAsync(serverHost, serverPort);
+                ConnectSucess.Visibility = Visibility;
+
             }
             catch (Exception ex)
             {
 
             }
-            ConnectSucess.Visibility = Visibility;
-
-            
            
         }
 

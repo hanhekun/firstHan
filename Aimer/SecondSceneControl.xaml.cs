@@ -67,7 +67,7 @@ namespace Aimer
             IEnumerable<SceneItem> items = scenePanel.Children.OfType<SceneItem>();
             foreach (var item in items)
             {
-                item.Click += Item_Click;
+                item.Click += Item_ClickAsync;
             }
         }
 
@@ -76,11 +76,11 @@ namespace Aimer
             IEnumerable<SceneItem> items = scenePanel.Children.OfType<SceneItem>();
             foreach (var item in items)
             {
-                item.Click -= Item_Click;
+                item.Click -= Item_ClickAsync;
             }
         }
 
-        private void Item_Click(object sender, EventArgs e)
+        private async void Item_ClickAsync(object sender, EventArgs e)
         {
             SceneSelectEventArgs args = e as SceneSelectEventArgs;
             var index = args.Index;
@@ -88,6 +88,12 @@ namespace Aimer
             foreach (var item in items)
             {
                 item.Select(index);
+                Windows.Networking.Sockets.StreamSocket socket = new Windows.Networking.Sockets.StreamSocket();
+                Stream streamOut = socket.OutputStream.AsStreamForWrite();
+                StreamWriter writer = new StreamWriter(streamOut);
+
+                await writer.WriteLineAsync("qqq");
+                await writer.FlushAsync();
             }
         }
     }
