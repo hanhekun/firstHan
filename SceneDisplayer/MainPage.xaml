@@ -6,14 +6,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel  Orientation="Vertical" Height="600" VerticalAlignment="Bottom">
-
-            <Rectangle Visibility="Collapsed" Width="40" Height="40" Fill="Red" x:Name="red" />
-            <Rectangle  Width="40" Height="40" Fill="Blue" x:Name="blue" Visibility="Collapsed"/>
-            <Rectangle Width="40" Height="40" Fill="Yellow" x:Name="yellow" Visibility="Collapsed"/>
-        </StackPanel>
-
-    </Grid>
+    <Viewbox>
+        <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="1280" Height="768">
+            <Grid x:Name="scenePanel">
+                <Image x:Name="downloadImage" Visibility="Collapsed" />
+                <Image x:Name="sceneImage" />
+            </Grid>
+        </Grid>
+    </Viewbox>
 </Page>

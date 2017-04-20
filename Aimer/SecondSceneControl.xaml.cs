@@ -42,15 +42,53 @@ namespace Aimer
 
         public void SetData(Scene scene)
         {
-            SceneItem item1 = new SceneItem();
+            RemoveListener();
+            scenePanel.Children.Clear();
+            Thickness margin = new Thickness(0, 0, 20, 0);
+            SceneItem item1 = new SceneItem();            
+            item1.Margin = margin;
             item1.SetData(scene, 1);
-            SceneItem item2 = new SceneItem();
+
+            SceneItem item2 = new SceneItem();            
             item2.SetData(scene, 2);
+            item2.Margin = margin;
             SceneItem item3 = new SceneItem();
             item3.SetData(scene, 3);
             scenePanel.Children.Add(item1);
             scenePanel.Children.Add(item2);
             scenePanel.Children.Add(item3);
+            AddListener();
+
+
+        }
+
+        private void AddListener()
+        {
+            IEnumerable<SceneItem> items = scenePanel.Children.OfType<SceneItem>();
+            foreach (var item in items)
+            {
+                item.Click += Item_Click;
+            }
+        }
+
+        private void RemoveListener()
+        {
+            IEnumerable<SceneItem> items = scenePanel.Children.OfType<SceneItem>();
+            foreach (var item in items)
+            {
+                item.Click -= Item_Click;
+            }
+        }
+
+        private void Item_Click(object sender, EventArgs e)
+        {
+            SceneSelectEventArgs args = e as SceneSelectEventArgs;
+            var index = args.Index;
+            IEnumerable<SceneItem> items = scenePanel.Children.OfType<SceneItem>();
+            foreach (var item in items)
+            {
+                item.Select(index);
+            }
         }
     }
 }

@@ -106,6 +106,7 @@
     <Compile Include="SceneItem.xaml.cs">
       <DependentUpon>SceneItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SceneSelectEventArgs.cs" />
     <Compile Include="SecondSceneControl.xaml.cs">
       <DependentUpon>SecondSceneControl.xaml</DependentUpon>
     </Compile>

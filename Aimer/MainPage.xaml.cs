@@ -35,26 +35,13 @@ namespace Aimer
         public MainPage()
         {
             this.InitializeComponent();
-            this.Loaded += async (s, e) =>
+            this.Loaded +=  (s, e) =>
              {
-                 FittingRoomClient room = new FittingRoomClient();
-                 var data = await room.GetScenesAsyc();
-                 var data2 = await room.GetGoodsScenesAsyc();
-                 Log.Info("Loaded");
                  frame.Navigate(typeof(VerticalPage));
              };
-            //this.Loaded += getDataAsync();
         }
 
-        //private async RoutedEventHandler getDataAsync(object sender, RoutedEventArgs e)
-        //{
-        //    FittingRoomClient room = new FittingRoomClient();
-        //    var data = await room.GetScenesAsyc();
-        //    var data2 = await room.GetGoodsScenesAsyc();
-        //    Log.Info("Loaded");
-        //    frame.Navigate(typeof(VerticalPage));
-        //    return ;
-        //}
+ 
         private async void red_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
@@ -64,32 +51,6 @@ namespace Aimer
             StreamWriter writer = new StreamWriter(streamOut);
             await writer.WriteLineAsync(request);
             await writer.FlushAsync();
-
-        }
-
-        private async void blue_Click(object sender, RoutedEventArgs e)
-        {
-           
-            Button btn = (Button)sender;
-            request = btn.Name;
-            //Write data to the echo server.
-            Stream streamOut = socket.OutputStream.AsStreamForWrite();
-            StreamWriter writer = new StreamWriter(streamOut);
-            await writer.WriteLineAsync(request);
-            await writer.FlushAsync();
-
-        }
-
-        private async void green_Click(object sender, RoutedEventArgs e)
-        {
-            Button btn = (Button)sender;
-            request = btn.Name;
-            //Write data to the echo server.
-            Stream streamOut = socket.OutputStream.AsStreamForWrite();
-            StreamWriter writer = new StreamWriter(streamOut);
-            await writer.WriteLineAsync(request);
-            await writer.FlushAsync();
-
         }
         
         private async void connectbutton_ClickAsync(object sender, RoutedEventArgs e)
@@ -112,9 +73,7 @@ namespace Aimer
             }
             ConnectSucess.Visibility = Visibility;
 
-            blue.IsEnabled = true;
-            red.IsEnabled = true;
-            yellow.IsEnabled = true;   
+            
            
         }
 

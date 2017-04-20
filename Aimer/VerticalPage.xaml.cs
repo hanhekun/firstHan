@@ -29,8 +29,7 @@ namespace Aimer
         private Dictionary<string, Scene> mAllScens;
         
         public VerticalPage()
-        {
-            
+        {            
             this.InitializeComponent();
             FillButtonAsync();
         }
@@ -53,7 +52,7 @@ namespace Aimer
         {
             var code = args.KeyCode;
             
-        Log.Debug(code+"");
+            Log.Debug(code+"");
             
             if (code == 13) //enter
             {
@@ -69,6 +68,7 @@ namespace Aimer
             {
                 str = str + (char)code;
             }
+
         }
 
         private async void FillButtonAsync()

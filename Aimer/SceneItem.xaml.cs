@@ -47,10 +47,7 @@ namespace Aimer
                     bitmap.UriSource = new Uri(scene.imgpath3);
                     break;
             }
-
-           sceneImage.Source = bitmap;
-            
-
+           sceneImage.Source = bitmap;            
         }
 
         public void Select(int index)
@@ -68,7 +65,17 @@ namespace Aimer
         private void RaiseClickEvent()
         {
             if (Click != null)
-                Click(this, EventArgs.Empty);
+            
+                Click(this, new SceneSelectEventArgs(mIndex));                  
         }
+
+        protected override void OnPointerPressed(PointerRoutedEventArgs e)
+        {
+            base.OnPointerPressed(e);
+            RaiseClickEvent();
+        }
+
+
+
     }
 }

@@ -131,6 +131,12 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Aimer.SDK\Aimer.SDK.csproj">
+      <Project>{E340838B-7A42-42EC-9B73-57F4D1AA6936}</Project>
+      <Name>Aimer.SDK</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

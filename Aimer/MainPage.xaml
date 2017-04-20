@@ -9,10 +9,9 @@
 
     <Viewbox>
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="800" Height="1280">
-            <StackPanel  Orientation="Vertical" BorderThickness="0,0,0,0" Visibility="Collapsed">
-                <Button x:Name="red" Content="Blue" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="211" Height="90" Margin="0,20,0,0" Click="red_Click" IsEnabled="False"/>
-                <Button x:Name="blue" Content="Blue" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="211" Height="90" Margin="0,110,0,0" Click="blue_Click" IsEnabled="False"/>
-                <Button x:Name="yellow" Content="Yellow" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="211" Height="90" Margin="0,200,0,0" Click="green_Click" IsEnabled="False"/>
+
+            <Frame x:Name="frame" />
+            <StackPanel  Orientation="Vertical" BorderThickness="0,0,0,0" Visibility="Visible">
                 <StackPanel Height="52" Orientation="Horizontal" Margin="30,30,10,30">
                     <TextBlock TextWrapping="Wrap" Text="Server:"  Width="68"/>
                     <TextBox TextWrapping="Wrap" Text="192.168.1.116" Margin="0,0,0,20" Width="218" x:Name="IP" />
@@ -22,8 +21,6 @@
                 <Button Content="Connect Sucess" Margin="0,20,0,20" Width="218" x:Name="ConnectSucess" Visibility="Collapsed" HorizontalAlignment="Center"/>
 
             </StackPanel>
-            <Frame x:Name="frame" />
-
         </Grid>
     </Viewbox>
 
