@@ -34,7 +34,6 @@ namespace Aimer
         public static StreamWriter Writer;
         string request;
         private string Ip;
-        private ApplicationDataContainer localIp;
         Windows.Networking.Sockets.StreamSocket socket = new Windows.Networking.Sockets.StreamSocket();
         public MainPage()
         {
@@ -51,7 +50,8 @@ namespace Aimer
             
             try
             {
-                object value = localIp.Values[Ip];
+                var settings = ApplicationData.Current.LocalSettings;
+                object value = settings.Values["IP"];
                 string IPValue = value.ToString();
                 Windows.Networking.HostName serverHost = new Windows.Networking.HostName(IPValue);
                 string serverPort = "1337";
@@ -84,8 +84,8 @@ namespace Aimer
         {
             TextBox TBox = IP;
             Ip = TBox.Text;
-            localIp = ApplicationData.Current.LocalSettings;
-            localIp.Values["IP"] = Ip;
+            var settings  = ApplicationData.Current.LocalSettings;
+            settings.Values["IP"] = Ip;
             try
             {
                 Windows.Networking.HostName serverHost = new Windows.Networking.HostName(Ip);
