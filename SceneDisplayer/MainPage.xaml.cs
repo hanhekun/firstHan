@@ -18,6 +18,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -36,31 +37,37 @@ namespace SceneDisplayer
         private DispatcherTimer mTimer = new DispatcherTimer();
         private int play=0;
         private IList<string> scenBitmaps = new List<string>();
+        Storyboard mStoryboard;
+        private bool isPlaying;
         public MainPage()
         {
             this.InitializeComponent();
+            mStoryboard = FindName("FadeIn") as Storyboard;
+             mStoryboard.FillBehavior = FillBehavior.Stop;
+            mStoryboard.Completed += MStoryboard_Completed;
             listening = true;
             CreateServerAsync();
             mTimer.Tick += MTimer_Tick;
-            mTimer.Interval = TimeSpan.FromSeconds(5);
+            mTimer.Interval = TimeSpan.FromSeconds(10);
+        }
+
+        private void MStoryboard_Completed(object sender, object e)
+        {
+            isPlaying = false;
         }
 
         private void MTimer_Tick(object sender, object e)
         {
+            if (isPlaying)
+                return;
             play++;
             if (play== scenBitmaps.Count)
             {
                 play = 0;
             }
-            for (var i = 0; i < scenBitmaps.Count; i++)
-            {
-                if (play == i)
-                { 
-                    BitmapImage bitmap = new BitmapImage();
-                    bitmap.UriSource = new Uri(scenBitmaps[i]);
-                    sceneImage.Source = bitmap;
-                }
-            }
+            sceneImage2.Opacity = 0;
+            mStoryboard.Begin();
+            isPlaying = true;
             Log.Debug(play+"");
 
         }

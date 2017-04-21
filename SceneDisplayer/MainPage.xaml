@@ -6,10 +6,19 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    <Page.Resources>
+        <Storyboard x:Name="FadeIn">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="sceneImage2">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
     <Viewbox>
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="1280" Height="768">
             <Grid x:Name="scenePanel">
-                <Image x:Name="sceneImage" />
+                <Image x:Name="sceneImage" Source="Assets/Images/1_1.jpg" Width="1280" Height="768"/>
+                <Image x:Name="sceneImage2"  Opacity="0" Width="1280" Height="768" />
             </Grid>
         </Grid>
     </Viewbox>
