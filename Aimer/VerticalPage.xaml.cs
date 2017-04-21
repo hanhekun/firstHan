@@ -171,6 +171,16 @@ namespace Aimer
             secondSceneControl.SetData(selectedScene, args.SceneId);
             secondSceneControl.Show();
         }
+        public void hideImg()
+        {
+            sceneSelectImg.Visibility = Visibility.Collapsed;
+            buttonGrid.Visibility = Visibility.Collapsed;
+        }
+        public void AppearImg()
+        {
+            sceneSelectImg.Visibility = Visibility.Visible;
+            buttonGrid.Visibility = Visibility.Visible;
+        }
     }
 
 

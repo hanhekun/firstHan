@@ -41,7 +41,15 @@ namespace Aimer
             this.Loaded +=  (s, e) =>
              {
                  frame.Navigate(typeof(VerticalPage));
+                 
+                
              };
+            frame.Navigated += Frame_Navigated;
+
+        }
+
+        private void Frame_Navigated(object sender, NavigationEventArgs e)
+        {
             LocalIpAsync();
         }
 
@@ -56,15 +64,17 @@ namespace Aimer
                 Windows.Networking.HostName serverHost = new Windows.Networking.HostName(IPValue);
                 string serverPort = "1337";
                 await socket.ConnectAsync(serverHost, serverPort);
-                ConnectSucess.Visibility = Visibility;
                 Stream streamOut = socket.OutputStream.AsStreamForWrite();
                 Writer = new StreamWriter(streamOut);
+
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
                 connectbutton.Visibility = Visibility.Visible;
                 stackPanel.Visibility = Visibility.Visible;
                 serverIP.Visibility = Visibility.Visible;
+                VerticalPage verticalpage = frame.Content as VerticalPage;
+                verticalpage.hideImg();
             }
         }
 
@@ -73,7 +83,6 @@ namespace Aimer
         {
             Button btn = (Button)sender;
             request = btn.Name;
-            //Write data to the echo server.
             Stream streamOut = socket.OutputStream.AsStreamForWrite();
             StreamWriter writer = new StreamWriter(streamOut);
             await writer.WriteLineAsync(request);
@@ -89,14 +98,17 @@ namespace Aimer
             try
             {
                 Windows.Networking.HostName serverHost = new Windows.Networking.HostName(Ip);
-
-                //Every protocol typically has a standard port number. For example HTTP is typically 80, FTP is 20 and 21, etc.
-                //For the echo server/client application we will use a random port 1337.
                 string serverPort = "1337";
                 await socket.ConnectAsync(serverHost, serverPort);
                 ConnectSucess.Visibility = Visibility;
                 Stream streamOut = socket.OutputStream.AsStreamForWrite();
                 Writer = new StreamWriter(streamOut);
+                VerticalPage verticalpage = frame.Content as VerticalPage;
+                verticalpage.AppearImg();
+                connectbutton.Visibility = Visibility.Collapsed;
+                stackPanel.Visibility = Visibility.Collapsed;
+                serverIP.Visibility = Visibility.Collapsed;
+
             }
             catch (Exception ex)
             {
