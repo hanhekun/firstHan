@@ -41,7 +41,7 @@ namespace Aimer.SDK
 
         }
 
-        public async Task<GoodSceneResponse> GetGoodsScenesAsyc()
+        public async Task<GoodSceneResponse> GetGoodsScenesAsyc(string str)
         {
             var Sign = md5(secret_code);
      
@@ -49,7 +49,7 @@ namespace Aimer.SDK
             using (HttpClient http = new HttpClient())
             {
 
-                var data = await http.GetStringAsync("http://mobiletest.aimer.com.cn:8888/fittingroom/getgoodsscene?g_id=13062852335372&sign=" + Sign);
+                var data = await http.GetStringAsync($"http://mobiletest.aimer.com.cn:8888/fittingroom/getgoodsscene?g_id={str}&sign=" + Sign);
 
 
                 return JsonConvert.DeserializeObject<GoodSceneResponse>(data);

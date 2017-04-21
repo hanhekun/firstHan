@@ -11,15 +11,15 @@
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="800" Height="1280">
 
             <Frame x:Name="frame" />
-            <StackPanel  Orientation="Vertical" BorderThickness="0,0,0,0" Visibility="Visible">
+            <StackPanel x:Name="stackPanel" Orientation="Vertical" BorderThickness="0,0,0,0" Visibility="Collapsed">
                 <StackPanel Height="52" Orientation="Horizontal" Margin="30,30,10,30">
                     <TextBlock TextWrapping="Wrap" Text="Server:"  Width="68"/>
-                    <TextBox TextWrapping="Wrap" Text="192.168.1.108" Margin="0,0,0,20" Width="218" x:Name="IP" />
+                    <TextBox TextWrapping="Wrap" Text="" Margin="0,0,0,20" Width="218" x:Name="IP" />
                 </StackPanel>
-
-                <Button x:Name="connectbutton"  Content="Connect" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="52" Click="connectbutton_ClickAsync" />
+                <Button x:Name="serverIP" Width="300" Height="100" Visibility="Collapsed" Content="链接失败，请重新链接"></Button>
+                <Button x:Name="connectbutton" Visibility="Collapsed" Content="Connect" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="52" Click="connectbutton_ClickAsync" />
                 <Button Content="Connect Sucess" Margin="0,20,0,20" Width="218" x:Name="ConnectSucess" Visibility="Collapsed" HorizontalAlignment="Center"/>
-
+                
             </StackPanel>
         </Grid>
     </Viewbox>

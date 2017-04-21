@@ -32,7 +32,7 @@
             <Image  Width="121" Height="121" Source="Assets/Images/quan.png" />
             <Image x:Name="image" Width="83" Height="77" Source="Assets/Images/爱心.png" Canvas.Left="20" Canvas.Top="18" />
         </Canvas>
-        <TextBlock x:Name="seneNameText" FontSize="17" Foreground="#c8c8c8" Text="居家 " TextAlignment="Center"/>
+        <TextBlock x:Name="seneNameText" FontSize="17" Foreground="#c8c8c8" TextAlignment="Center"/>
         <TextBlock x:Name="seneNameEnText" FontSize="17" Foreground="#c8c8c8" Text="home " TextAlignment="Center" />
     </StackPanel>
 </UserControl>

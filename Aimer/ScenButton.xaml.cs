@@ -43,6 +43,7 @@ namespace Aimer
             pointerDown = FindName("PointDownStoryboard") as Storyboard;
             pointerUp = FindName("PointUpStoryboard") as Storyboard;
             pointerUp.Completed += PointerUp_Completed;
+            
         }
 
         private void PointerUp_Completed(object sender, object e)
@@ -64,6 +65,7 @@ namespace Aimer
                 int width = bitmap.PixelHeight;
                 image.Source = bitmap;
             }
+
         }
 
         protected override void OnPointerPressed(PointerRoutedEventArgs e)
@@ -84,6 +86,11 @@ namespace Aimer
             {
                 Click(this, new SceneButtonEventArgs(mSceneId));
             }
+            
+        }
+        public string getText()
+        {
+            return seneNameText.Text;
         }
     }
 }

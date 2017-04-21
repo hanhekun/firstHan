@@ -22,11 +22,12 @@ namespace Aimer
     public sealed partial class SecondSceneControl : UserControl
     {
         private ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<SecondSceneControl>();
-        private string mSceneId;
+        private string mSceneId;        
 
         public SecondSceneControl()
         {
             this.InitializeComponent();
+            
         }
 
         private void close_Click(object sender, RoutedEventArgs e)

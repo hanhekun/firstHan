@@ -19,6 +19,7 @@ using System.Data;
 using Newtonsoft.Json;
 using Windows.UI.Xaml.Media.Imaging;
 using MetroLog;
+using Windows.Storage;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -32,6 +33,8 @@ namespace Aimer
         private ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MainPage>();
         public static StreamWriter Writer;
         string request;
+        private string Ip;
+        private ApplicationDataContainer localIp;
         Windows.Networking.Sockets.StreamSocket socket = new Windows.Networking.Sockets.StreamSocket();
         public MainPage()
         {
@@ -40,9 +43,32 @@ namespace Aimer
              {
                  frame.Navigate(typeof(VerticalPage));
              };
+            LocalIpAsync();
         }
 
- 
+        private async void LocalIpAsync()
+        {
+            
+            try
+            {
+                object value = localIp.Values[Ip];
+                string IPValue = value.ToString();
+                Windows.Networking.HostName serverHost = new Windows.Networking.HostName(IPValue);
+                string serverPort = "1337";
+                await socket.ConnectAsync(serverHost, serverPort);
+                ConnectSucess.Visibility = Visibility;
+                Stream streamOut = socket.OutputStream.AsStreamForWrite();
+                Writer = new StreamWriter(streamOut);
+            }
+            catch (Exception ex)
+            {
+                connectbutton.Visibility = Visibility.Visible;
+                stackPanel.Visibility = Visibility.Visible;
+                serverIP.Visibility = Visibility.Visible;
+            }
+        }
+
+
         private async void red_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
@@ -57,8 +83,9 @@ namespace Aimer
         private async void connectbutton_ClickAsync(object sender, RoutedEventArgs e)
         {
             TextBox TBox = IP;
-            var Ip = TBox.Text;
-            
+            Ip = TBox.Text;
+            localIp = ApplicationData.Current.LocalSettings;
+            localIp.Values["IP"] = Ip;
             try
             {
                 Windows.Networking.HostName serverHost = new Windows.Networking.HostName(Ip);

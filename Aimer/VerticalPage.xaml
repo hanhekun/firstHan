@@ -9,8 +9,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Canvas  Width="800" Height="1280" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-        <WebView x:Name="vetrtcalPage" Source="http://m.aimer.com.cn/" Width="800" Height="1010" ></WebView>
+        <Button x:Name="barCode" Visibility="Collapsed"></Button>
+        <WebView x:Name="vetrtcalPage" Source="http://m.aimer.com.cn/" Width="800" Height="1010"  ></WebView>
         <Image Source="/Assets/Images/情景选择.png" Width="800" Height="67" Canvas.Top="1006" />
         <Grid  Canvas.Left="0" Canvas.Top="1080" Width="800" Height="200" Background="White">
             <StackPanel x:Name="themeButtonPanel" Orientation="Horizontal"  Height="200" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center">

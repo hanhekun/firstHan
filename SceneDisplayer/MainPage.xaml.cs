@@ -140,21 +140,23 @@ namespace SceneDisplayer
                 int scenIndex = int.Parse(data[2]);
                 BitmapImage bitmap = new BitmapImage();
                 
-                int index = sceneId * 3 + scenIndex;
+                int index = (sceneId-1) * 3 + scenIndex-1;
                 bitmap.UriSource = new Uri(scenBitmaps[index]);
-                if (index< scenBitmaps.Count)
+                if (index<= scenBitmaps.Count)
                 {
                     sceneImage.Source = bitmap;
                 }
                 
             }
         }
+        Windows.Networking.Sockets.StreamSocketListener socketListener;
         private async System.Threading.Tasks.Task CreateServerAsync()
         {
             try
             {
-                Windows.Networking.Sockets.StreamSocketListener socketListener = new Windows.Networking.Sockets.StreamSocketListener();
+                socketListener = new Windows.Networking.Sockets.StreamSocketListener();
                 socketListener.ConnectionReceived += SocketListener_ConnectionReceived;
+                
                 await socketListener.BindServiceNameAsync("1337");
             }
             catch (Exception e)
@@ -172,6 +174,8 @@ namespace SceneDisplayer
             while(listening)
             {
                 string request = await reader.ReadLineAsync();
+                if (request == null)
+                    break;
                 await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
                 {
                     appear(request);

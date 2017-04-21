@@ -9,7 +9,6 @@
     <Viewbox>
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="1280" Height="768">
             <Grid x:Name="scenePanel">
-                <Image x:Name="downloadImage" Visibility="Collapsed" />
                 <Image x:Name="sceneImage" />
             </Grid>
         </Grid>
