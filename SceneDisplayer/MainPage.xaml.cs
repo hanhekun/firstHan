@@ -37,18 +37,26 @@ namespace SceneDisplayer
         private DispatcherTimer mTimer = new DispatcherTimer();
         private int play=0;
         private IList<string> scenBitmaps = new List<string>();
-        Storyboard mStoryboard;
         private bool isPlaying;
+        private DateTime mStartTime = DateTime.Now;
         public MainPage()
         {
-            this.InitializeComponent();
-            mStoryboard = FindName("FadeIn") as Storyboard;
-             mStoryboard.FillBehavior = FillBehavior.Stop;
-            mStoryboard.Completed += MStoryboard_Completed;
+            this.InitializeComponent();          
             listening = true;
             CreateServerAsync();
+            
             mTimer.Tick += MTimer_Tick;
-            mTimer.Interval = TimeSpan.FromSeconds(10);
+            mTimer.Interval = TimeSpan.FromSeconds(5);
+           
+        }
+
+        private void createImg1()
+        {
+            Image img1 = new Image();
+            BitmapImage bitmap = new BitmapImage();           
+            bitmap.UriSource = new Uri(scenBitmaps[0]);
+            img1.Source = bitmap;
+            this.scenePanel.Children.Add(img1);
         }
 
         private void MStoryboard_Completed(object sender, object e)
@@ -58,17 +66,27 @@ namespace SceneDisplayer
 
         private void MTimer_Tick(object sender, object e)
         {
-            if (isPlaying)
+            if (isPlaying || DateTime.Now.Subtract(mStartTime).TotalSeconds < 5)
                 return;
             play++;
             if (play== scenBitmaps.Count)
             {
                 play = 0;
             }
-            sceneImage2.Opacity = 0;
-            mStoryboard.Begin();
+            Image sceneImage2 = start(play);
+            Storyboard story= FadeInEffect(scenePanel.Children[0], sceneImage2);
             isPlaying = true;
-            Log.Debug(play+"");
+            story.Completed += Story_Completed;
+            mStartTime = DateTime.Now;
+            story.Begin();
+        }
+
+        private void Story_Completed(object sender, object e)
+        {
+            if (scenBitmaps.Count == 0)
+                return;
+            isPlaying = false;
+            scenePanel.Children.RemoveAt(0);
 
         }
 
@@ -76,7 +94,6 @@ namespace SceneDisplayer
         {
             base.OnNavigatedTo(e);
             GetAllScenes();
-          
         }
 
         private async void GetAllScenes()
@@ -99,7 +116,9 @@ namespace SceneDisplayer
                         scenBitmaps.Add(Path2);
                         Path3 = await LoadBitmap(Path3, mAllScens.ElementAt(i).Key, "3");
                         scenBitmaps.Add(Path3);
-                    }                    
+                    }
+                    createImg1();
+
                 }
                 mTimer.Start();
             }
@@ -137,23 +156,33 @@ namespace SceneDisplayer
         }
 
 
-        private void appear(string request)
+        private async Task appearAsync(string request)
         {
             string[] data = request.Split(new char[] { ',' });
             string action = data[0];
             if (action == "scene")
             {
-                int sceneId=int.Parse(data[1]);
+                if (isPlaying)
+                {
+                    await Task.Delay(1500);
+                }
+                int sceneId = int.Parse(data[1]);
                 int scenIndex = int.Parse(data[2]);
                 BitmapImage bitmap = new BitmapImage();
-                
-                int index = (sceneId-1) * 3 + scenIndex-1;
+
+                int index = (sceneId - 1) * 3 + scenIndex - 1;
                 bitmap.UriSource = new Uri(scenBitmaps[index]);
-                if (index<= scenBitmaps.Count)
+                if (index <= scenBitmaps.Count)
                 {
-                    sceneImage.Source = bitmap;
+                    Image sceneImage2 = start(index);
+                    Storyboard story = FadeInEffect(scenePanel.Children[0], sceneImage2);
+                    isPlaying = true;
+                    story.Completed += Story_Completed;
+                    mStartTime = DateTime.Now;
+                    story.Begin();
+                    mTimer.Start();
                 }
-                
+
             }
         }
         Windows.Networking.Sockets.StreamSocketListener socketListener;
@@ -185,12 +214,47 @@ namespace SceneDisplayer
                     break;
                 await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
                 {
-                    appear(request);
+                    appearAsync(request);
                 }));
             }
         }
-
-    
+        public static Storyboard FadeInEffect(UIElement pre, UIElement cur)
+        {
+            
+            Storyboard story = new Storyboard();
+            DoubleAnimation daIn = new DoubleAnimation();
+            daIn.Duration = TimeSpan.FromMilliseconds(1500);
+            daIn.From = 0;
+            daIn.To = 1;
+            DoubleAnimation daOut = new DoubleAnimation();
+            daOut.From = 1;
+            daOut.To = 0;
+            daOut.Duration = TimeSpan.FromMilliseconds(1500);
+            story.Children.Add(daIn);
+            story.Children.Add(daOut);
+           Storyboard.SetTarget(daIn, cur);
+            Storyboard.SetTarget(daOut, pre);
+            Storyboard.SetTargetProperty(daIn, "Opacity");
+            Storyboard.SetTargetProperty(daOut, "Opacity");
+            
+            return story;
+        }
+        private Image start(int play)
+        {
+            Image img2 = new Image();
+            BitmapImage bitmap = new BitmapImage();
+            if (play+1 == scenBitmaps.Count)
+            {
+                play = -1;
+            }
+            bitmap.UriSource = new Uri(scenBitmaps[play+1]);
+            img2.Source = bitmap;
+            img2.Opacity = 0;
+            this.scenePanel.Children.Add(img2);
+            return img2;
+            
+        }
+        
 
     }
 
