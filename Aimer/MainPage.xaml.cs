@@ -77,17 +77,6 @@ namespace Aimer
                 verticalpage.hideImg();
             }
         }
-
-
-        private async void red_Click(object sender, RoutedEventArgs e)
-        {
-            Button btn = (Button)sender;
-            request = btn.Name;
-            Stream streamOut = socket.OutputStream.AsStreamForWrite();
-            StreamWriter writer = new StreamWriter(streamOut);
-            await writer.WriteLineAsync(request);
-            await writer.FlushAsync();
-        }
         
         private async void connectbutton_ClickAsync(object sender, RoutedEventArgs e)
         {

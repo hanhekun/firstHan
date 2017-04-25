@@ -39,6 +39,7 @@ namespace SceneDisplayer
         private IList<string> scenBitmaps = new List<string>();
         private bool isPlaying=false;
         private DateTime mStartTime = DateTime.Now;
+        private Boolean isConnect = false;
         public MainPage()
         {
             this.InitializeComponent();          
@@ -107,6 +108,7 @@ namespace SceneDisplayer
             try
             {
                 var result = await room.GetScenesAsyc();
+                
                 if (result.response == "getscenes")
                 {
                     mAllScens = result.scenslist;
@@ -129,6 +131,7 @@ namespace SceneDisplayer
             }
             catch (Exception e)
             {
+                internetSourceFailed.Visibility = Visibility.Visible;
                 Log.Error("get scens error", e);
             }
         }
@@ -202,6 +205,7 @@ namespace SceneDisplayer
         {
             try
             {
+                
                 socketListener = new Windows.Networking.Sockets.StreamSocketListener();
                 socketListener.ConnectionReceived += SocketListener_ConnectionReceived;
                 
@@ -215,21 +219,47 @@ namespace SceneDisplayer
         
 
         private async void SocketListener_ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
-        {
-            //Read line from the remote client.
+        {               
+            isConnect = true;
             Stream inStream = args.Socket.InputStream.AsStreamForRead();
             StreamReader reader = new StreamReader(inStream);
-            while(listening)
+            if (isConnect)
             {
-                string request = await reader.ReadLineAsync();
-                if (request == null)
-                    break;
+                Stream outStream = args.Socket.OutputStream.AsStreamForWrite();
+                StreamWriter writer = new StreamWriter(outStream);
+                await writer.WriteLineAsync("已经有设备连接，禁止连接");
+                //await writer.FlushAsync();
+            }              
+            while (listening)
+            {
                 await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
                 {
+                    notConnect.Visibility = Visibility.Collapsed;
+                    disposeConnect.Visibility = Visibility.Collapsed;
+                }));
+                string request = await reader.ReadLineAsync();
+                if (request == null)
+                {
+                    await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
+                    {
+                        disposeConnect.Visibility = Visibility.Visible;
+                        isConnect = false;
+                    }));
+                    break;
+                }
+                              
+
+                    
+                await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
+                {
+                    
                     appearAsync(request);
                 }));
             }
+
         }
+
+        
         public static Storyboard FadeInEffect(UIElement pre, UIElement cur)
         {
             

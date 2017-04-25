@@ -10,6 +10,9 @@
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="1280" Height="768">
             <Grid x:Name="scenePanel">
             </Grid>
+            <Button x:Name="notConnect" Content="未连接" Margin="40,69,0,667" Opacity="0.6"></Button>
+            <Button x:Name="disposeConnect" Content="连接已经断开" Margin="40,69,0,667" Visibility="Collapsed" Opacity="0.6"></Button>
+            <Button x:Name="internetSourceFailed" Width="1280" Height="768" Content="获取网络资源失败" Visibility="Collapsed" ></Button>
         </Grid>
     </Viewbox>
 </Page>
