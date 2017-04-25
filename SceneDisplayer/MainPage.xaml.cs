@@ -248,7 +248,10 @@ namespace SceneDisplayer
                     break;
                 }
                               
+                if(request== "testConnect")
+                {
 
+                }
                     
                 await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
                 {

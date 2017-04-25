@@ -32,6 +32,7 @@ namespace Aimer
     {
         private ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MainPage>();
         public static StreamWriter Writer;
+        private DispatcherTimer mTimer = new DispatcherTimer();
         string request;
         private string Ip;
         Windows.Networking.Sockets.StreamSocket socket = new Windows.Networking.Sockets.StreamSocket();
@@ -64,8 +65,20 @@ namespace Aimer
                 Windows.Networking.HostName serverHost = new Windows.Networking.HostName(IPValue);
                 string serverPort = "1337";
                 await socket.ConnectAsync(serverHost, serverPort);
-                Stream streamOut = socket.OutputStream.AsStreamForWrite();
+                Stream streamOut = socket.OutputStream.AsStreamForWrite();              
                 Writer = new StreamWriter(streamOut);
+                //create timer
+                mTimer.Tick += MTimer_Tick;
+                mTimer.Interval = TimeSpan.FromSeconds(5);
+                mTimer.Start();
+                //read data from server
+                Stream streamIn = socket.InputStream.AsStreamForRead();
+                StreamReader reader = new StreamReader(streamIn);
+                if (reader != null)
+                {
+                    connectFalse.Visibility = Visibility.Visible;
+                    connectFalse.Content = reader;
+                }
 
             }
             catch (Exception e)
@@ -77,7 +90,20 @@ namespace Aimer
                 verticalpage.hideImg();
             }
         }
-        
+
+        private async void MTimer_Tick(object sender, object e)
+        {
+            try
+            {
+                await Writer.WriteLineAsync("testConnect");
+                await Writer.FlushAsync();
+            }
+            catch (Exception ex)
+            {
+                serverDisposed.Visibility = Visibility.Visible;
+            }
+        }
+
         private async void connectbutton_ClickAsync(object sender, RoutedEventArgs e)
         {
             TextBox TBox = IP;
@@ -94,6 +120,11 @@ namespace Aimer
                 Writer = new StreamWriter(streamOut);
                 VerticalPage verticalpage = frame.Content as VerticalPage;
                 verticalpage.AppearImg();
+                //create timer
+                mTimer.Tick += MTimer_Tick;
+                mTimer.Interval = TimeSpan.FromSeconds(5);
+                mTimer.Start();
+
                 connectbutton.Visibility = Visibility.Collapsed;
                 stackPanel.Visibility = Visibility.Collapsed;
                 serverIP.Visibility = Visibility.Collapsed;
