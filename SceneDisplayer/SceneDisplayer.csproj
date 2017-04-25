@@ -113,6 +113,7 @@
   <ItemGroup>
     <Content Include="Assets\Images\1_1.jpg" />
     <Content Include="Assets\Images\1_2.jpg" />
+    <Content Include="Assets\loadfailed.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

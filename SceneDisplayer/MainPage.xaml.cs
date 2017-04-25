@@ -37,7 +37,7 @@ namespace SceneDisplayer
         private DispatcherTimer mTimer = new DispatcherTimer();
         private int play=0;
         private IList<string> scenBitmaps = new List<string>();
-        private bool isPlaying;
+        private bool isPlaying=false;
         private DateTime mStartTime = DateTime.Now;
         public MainPage()
         {
@@ -53,9 +53,14 @@ namespace SceneDisplayer
         private void createImg1()
         {
             Image img1 = new Image();
-            BitmapImage bitmap = new BitmapImage();           
+            BitmapImage bitmap = new BitmapImage();
+            if (bitmap.UriSource == null)
+            {
+                bitmap.UriSource = new Uri("ms-appx:///Assets/loadfailed.jpg");
+            }
             bitmap.UriSource = new Uri(scenBitmaps[0]);
             img1.Source = bitmap;
+
             this.scenePanel.Children.Add(img1);
         }
 
@@ -164,14 +169,21 @@ namespace SceneDisplayer
             {
                 if (isPlaying)
                 {
-                    await Task.Delay(1500);
+                    await Task.Delay(1000);
                 }
                 int sceneId = int.Parse(data[1]);
                 int scenIndex = int.Parse(data[2]);
                 BitmapImage bitmap = new BitmapImage();
 
-                int index = (sceneId - 1) * 3 + scenIndex - 1;
-                bitmap.UriSource = new Uri(scenBitmaps[index]);
+                int index = (sceneId - 1) * 3 + scenIndex - 2;
+                if (index == -1)
+                {
+                    bitmap.UriSource = new Uri(scenBitmaps[0]);
+                }
+                else
+                {
+                    bitmap.UriSource = new Uri(scenBitmaps[index]);
+                }
                 if (index <= scenBitmaps.Count)
                 {
                     Image sceneImage2 = start(index);
@@ -248,6 +260,11 @@ namespace SceneDisplayer
                 play = -1;
             }
             bitmap.UriSource = new Uri(scenBitmaps[play+1]);
+            if (bitmap.UriSource==null)
+            {
+                bitmap.UriSource = new Uri("ms-appx:///Assets/loadfailed.jpg");
+            }
+
             img2.Source = bitmap;
             img2.Opacity = 0;
             this.scenePanel.Children.Add(img2);
