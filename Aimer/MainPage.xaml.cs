@@ -71,6 +71,7 @@ namespace Aimer
                 object value = settings.Values["IP"];
                 string IPValue = value.ToString();
                 IP.Text = IPValue;
+                mTimer2.Start();
                 Windows.Networking.HostName serverHost = new Windows.Networking.HostName(IPValue);
                 string serverPort = "1337";
                 await socket.ConnectAsync(serverHost, serverPort);
@@ -88,7 +89,7 @@ namespace Aimer
                     connectFalse.Visibility = Visibility.Visible;
                     connectFalse.Content = reader;
                 }
-                mTimer2.Start();
+                
                 
             }
             catch (Exception e)
@@ -117,6 +118,7 @@ namespace Aimer
 
         private async void connectbutton_ClickAsync(object sender, RoutedEventArgs e)
         {
+            mTimer2.Start();
             TextBox TBox = IP;
             Ip = TBox.Text;
             var settings  = ApplicationData.Current.LocalSettings;
