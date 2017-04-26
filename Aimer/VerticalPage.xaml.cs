@@ -95,21 +95,24 @@ namespace Aimer
         private void CoreWindow_CharacterReceived(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.CharacterReceivedEventArgs args)
         {
             var code = args.KeyCode;
-            
+            Log.Debug(code.ToString());
             
             if (code == 13) //enter
             {
                 Frame rootFrame = Window.Current.Content as Frame;
                 MainPage main = rootFrame.Content as MainPage;
-                if (main.getText() != "")
+                string s = main.getText();
+                if ( s!= "")
                 {
-                    string str = main.getText();
+                    str =s;
                 }
-                Uri uri = new Uri("http://www.aimer.com.cn/goods/" + str);                
-                vetrtcalPage.Source = (uri);
-                hideGoodsScene();
-                getGoodsScenes(str);
-                
+                if(str != "")
+                {
+                    Uri uri = new Uri("http://www.aimer.com.cn/goods/" + str);
+                    vetrtcalPage.Source = (uri);
+                    hideGoodsScene();
+                    getGoodsScenes(str);
+                }
                 str = "";
             }
 
