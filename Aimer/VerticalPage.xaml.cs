@@ -99,10 +99,17 @@ namespace Aimer
             
             if (code == 13) //enter
             {
-                Uri uri = new Uri("http://www.aimer.com.cn/goods/"+str);
+                Frame rootFrame = Window.Current.Content as Frame;
+                MainPage main = rootFrame.Content as MainPage;
+                if (main.getText() != "")
+                {
+                    string str = main.getText();
+                }
+                Uri uri = new Uri("http://www.aimer.com.cn/goods/" + str);                
                 vetrtcalPage.Source = (uri);
                 hideGoodsScene();
                 getGoodsScenes(str);
+                
                 str = "";
             }
 

@@ -176,5 +176,11 @@ namespace Aimer
             verticalpage.hideImg();
 
         }
+        public string getText()
+        {
+            string text = barcodeInput.Text;
+            barcodeInput.Text = "";
+            return text;
+        }
     }
 }
