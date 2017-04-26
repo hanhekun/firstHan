@@ -28,19 +28,15 @@ namespace Aimer
         private string str = "";
         private Dictionary<string, Scene> mAllScens;
         
-        
         public VerticalPage()
         {            
             this.InitializeComponent();
             FillButtonAsync();
             vetrtcalPage.DOMContentLoaded += VetrtcalPage_DOMContentLoaded;
             vetrtcalPage.NewWindowRequested += WebView_NewWindowRequested;
-            vetrtcalPage.AllowFocusWhenDisabled = false;
-            vetrtcalPage.AllowFocusOnInteraction = false;
             
             vetrtcalPage.GotFocus += VetrtcalPage_GotFocus;
-            vetrtcalPage.LostFocus += VetrtcalPage_LostFocus;
-
+            vetrtcalPage.LostFocus += VetrtcalPage_LostFocus;           
         }
 
         private void WebView_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)

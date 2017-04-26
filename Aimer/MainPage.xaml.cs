@@ -33,6 +33,8 @@ namespace Aimer
         private ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MainPage>();
         public static StreamWriter Writer;
         private DispatcherTimer mTimer = new DispatcherTimer();
+        private DispatcherTimer mTimer2 = new DispatcherTimer();
+
         string request;
         private string Ip;
         Windows.Networking.Sockets.StreamSocket socket = new Windows.Networking.Sockets.StreamSocket();
@@ -46,7 +48,13 @@ namespace Aimer
                 
              };
             frame.Navigated += Frame_Navigated;
+            mTimer2.Tick += MTimer2_Tick;
+            mTimer2.Interval = TimeSpan.FromSeconds(2);
+        }
 
+        private void MTimer2_Tick(object sender, object e)
+        {
+            serverIP.Focus(FocusState.Keyboard);
         }
 
         private void Frame_Navigated(object sender, NavigationEventArgs e)
@@ -79,7 +87,7 @@ namespace Aimer
                     connectFalse.Visibility = Visibility.Visible;
                     connectFalse.Content = reader;
                 }
-
+                mTimer2.Start();
             }
             catch (Exception e)
             {

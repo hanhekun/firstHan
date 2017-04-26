@@ -229,36 +229,46 @@ namespace SceneDisplayer
                 StreamWriter writer = new StreamWriter(outStream);
                 await writer.WriteLineAsync("已经有设备连接，禁止连接");
                 //await writer.FlushAsync();
-            }              
-            while (listening)
-            {
-                await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
-                {
-                    notConnect.Visibility = Visibility.Collapsed;
-                    disposeConnect.Visibility = Visibility.Collapsed;
-                }));
-                string request = await reader.ReadLineAsync();
-                if (request == null)
+            }
+            try {
+                while (listening)
                 {
                     await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
                     {
-                        disposeConnect.Visibility = Visibility.Visible;
-                        isConnect = false;
+                        notConnect.Visibility = Visibility.Collapsed;
+                        disposeConnect.Visibility = Visibility.Collapsed;
                     }));
-                    break;
-                }
-                              
-                if(request== "testConnect")
-                {
 
+                    string request = await reader.ReadLineAsync();
+                    if (request == null)
+                    {
+                        await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
+                        {
+                            disposeConnect.Visibility = Visibility.Visible;
+                            isConnect = false;
+                        }));
+                        break;
+                    }
+
+                    if (request == "testConnect")
+                    {
+
+                    }
+
+                    await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
+                    {
+
+                        appearAsync(request);
+                    }));
                 }
-                    
+            }catch(Exception e)
+            {
                 await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
                 {
-                    
-                    appearAsync(request);
+                    disposeConnect.Visibility = Visibility.Collapsed;
                 }));
             }
+            
 
         }
 
