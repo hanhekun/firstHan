@@ -228,7 +228,7 @@ namespace SceneDisplayer
                 Stream outStream = args.Socket.OutputStream.AsStreamForWrite();
                 StreamWriter writer = new StreamWriter(outStream);
                 await writer.WriteLineAsync("已经有设备连接，禁止连接");
-                //await writer.FlushAsync();
+                await writer.FlushAsync();
             }
             try {
                 while (listening)
@@ -265,7 +265,7 @@ namespace SceneDisplayer
             {
                 await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
                 {
-                    disposeConnect.Visibility = Visibility.Collapsed;
+                    disposeConnect.Visibility = Visibility.Visible;
                 }));
             }
             
