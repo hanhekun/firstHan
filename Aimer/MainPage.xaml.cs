@@ -70,6 +70,7 @@ namespace Aimer
                 var settings = ApplicationData.Current.LocalSettings;
                 object value = settings.Values["IP"];
                 string IPValue = value.ToString();
+                IP.Text = IPValue;
                 Windows.Networking.HostName serverHost = new Windows.Networking.HostName(IPValue);
                 string serverPort = "1337";
                 await socket.ConnectAsync(serverHost, serverPort);
@@ -88,6 +89,7 @@ namespace Aimer
                     connectFalse.Content = reader;
                 }
                 mTimer2.Start();
+                
             }
             catch (Exception e)
             {
@@ -96,6 +98,7 @@ namespace Aimer
                 serverIP.Visibility = Visibility.Visible;
                 VerticalPage verticalpage = frame.Content as VerticalPage;
                 verticalpage.hideImg();
+                
             }
         }
 
@@ -136,7 +139,7 @@ namespace Aimer
                 connectbutton.Visibility = Visibility.Collapsed;
                 stackPanel.Visibility = Visibility.Collapsed;
                 serverIP.Visibility = Visibility.Collapsed;
-
+                
             }
             catch (Exception ex)
             {
