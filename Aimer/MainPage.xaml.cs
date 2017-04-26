@@ -37,7 +37,7 @@ namespace Aimer
 
         string request;
         private string Ip;
-        Windows.Networking.Sockets.StreamSocket socket = new Windows.Networking.Sockets.StreamSocket();
+        Windows.Networking.Sockets.StreamSocket socket;
         public MainPage()
         {
             this.InitializeComponent();
@@ -50,11 +50,24 @@ namespace Aimer
             frame.Navigated += Frame_Navigated;
             mTimer2.Tick += MTimer2_Tick;
             mTimer2.Interval = TimeSpan.FromSeconds(2);
+            IP.GotFocus += IP_GotFocus;
+            IP.LostFocus += IP_LostFocus;
+        }
+
+        private void IP_LostFocus(object sender, RoutedEventArgs e)
+        {
+            mTimer.Start();
+        }
+
+        private void IP_GotFocus(object sender, RoutedEventArgs e)
+        {
+            mTimer2.Stop();
         }
 
         private void MTimer2_Tick(object sender, object e)
         {
-            serverIP.Focus(FocusState.Keyboard);
+            //serverIP.Visibility = Visibility.Visible;
+            barcodeInput.Focus(FocusState.Keyboard);
         }
 
         private void Frame_Navigated(object sender, NavigationEventArgs e)
@@ -74,6 +87,7 @@ namespace Aimer
                 mTimer2.Start();
                 Windows.Networking.HostName serverHost = new Windows.Networking.HostName(IPValue);
                 string serverPort = "1337";
+                socket = new Windows.Networking.Sockets.StreamSocket();
                 await socket.ConnectAsync(serverHost, serverPort);
                 Stream streamOut = socket.OutputStream.AsStreamForWrite();              
                 Writer = new StreamWriter(streamOut);
@@ -123,12 +137,13 @@ namespace Aimer
             Ip = TBox.Text;
             var settings  = ApplicationData.Current.LocalSettings;
             settings.Values["IP"] = Ip;
+            serverDisposed.Visibility = Visibility.Collapsed;
             try
             {
+                socket = new Windows.Networking.Sockets.StreamSocket();
                 Windows.Networking.HostName serverHost = new Windows.Networking.HostName(Ip);
                 string serverPort = "1337";
                 await socket.ConnectAsync(serverHost, serverPort);
-                ConnectSucess.Visibility = Visibility;
                 Stream streamOut = socket.OutputStream.AsStreamForWrite();
                 Writer = new StreamWriter(streamOut);
                 VerticalPage verticalpage = frame.Content as VerticalPage;
@@ -145,12 +160,21 @@ namespace Aimer
             }
             catch (Exception ex)
             {
-
+                
             }
            
         }
 
-       
+        private void serverDisposed_Click(object sender, RoutedEventArgs e)
+        {
+            serverDisposed.Visibility = Visibility.Collapsed;
+            connectbutton.Visibility = Visibility.Visible;
+            stackPanel.Visibility = Visibility.Visible;
+            serverIP.Visibility = Visibility.Visible;
 
+            VerticalPage verticalpage = frame.Content as VerticalPage;
+            verticalpage.hideImg();
+
+        }
     }
 }

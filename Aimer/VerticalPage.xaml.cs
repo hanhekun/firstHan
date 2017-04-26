@@ -32,34 +32,19 @@ namespace Aimer
         {            
             this.InitializeComponent();
             FillButtonAsync();
-            vetrtcalPage.DOMContentLoaded += VetrtcalPage_DOMContentLoaded;
             vetrtcalPage.NewWindowRequested += WebView_NewWindowRequested;
             
-            vetrtcalPage.GotFocus += VetrtcalPage_GotFocus;
-            vetrtcalPage.LostFocus += VetrtcalPage_LostFocus;           
         }
+
 
         private void WebView_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)
         {
             sender.Navigate(args.Uri);
+            barCode.Focus(FocusState.Pointer);
             args.Handled = true;
         }
 
-        private void VetrtcalPage_LostFocus(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void VetrtcalPage_GotFocus(object sender, RoutedEventArgs e)
-        {
-            barCode.Focus(FocusState.Keyboard);
-
-        }
-
-        private void VetrtcalPage_DOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
-        {
-            barCode.Focus(FocusState.Keyboard);
-        }
+  
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -79,14 +64,23 @@ namespace Aimer
         private async void getGoodsScenes(string str)
        
         {
-            FittingRoomClient fittingRoom = new FittingRoomClient();
-            GoodSceneResponse selectScenes =await  fittingRoom.GetGoodsScenesAsyc(str);
-            if(selectScenes.response == "getgoodsscene")
+            try
             {
-                string flag = selectScenes.flag;
-                
-                CutButton(flag);
+                FittingRoomClient fittingRoom = new FittingRoomClient();
+
+                GoodSceneResponse selectScenes = await fittingRoom.GetGoodsScenesAsyc(str);
+                if (selectScenes.response == "getgoodsscene")
+                {
+                    string flag = selectScenes.flag;
+
+                    CutButton(flag);
+                }
             }
+            catch (Exception e)
+            {
+
+            }
+            
         }
 
         private void FilterScene(int sceneId)
@@ -114,13 +108,18 @@ namespace Aimer
 
             else if (code >= 48 && code <= 57) //0-9
             {
-               str = str + (args.KeyCode - 48);
+                    str = str + (args.KeyCode - 48);
             }
             else if (code >= 97 && code <= 122) //a-z
             {
                 str = str + (char)code;
             }
 
+        }
+
+        public void UnFocus()
+        {
+            vetrtcalPage.Focus(FocusState.Unfocused);
         }
 
         private async void FillButtonAsync()
