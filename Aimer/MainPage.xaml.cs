@@ -126,7 +126,12 @@ namespace Aimer
             }
             catch (Exception ex)
             {
-                serverDisposed.Visibility = Visibility.Visible;
+              
+                if(ex.Message.Length== 40)
+                {
+                    serverDisposed.Visibility = Visibility.Visible;
+                }
+                
             }
         }
 
