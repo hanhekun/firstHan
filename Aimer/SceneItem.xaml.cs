@@ -23,6 +23,7 @@ namespace Aimer
     {
         public event EventHandler Click;
         private int mIndex;
+        //private string scene;
         public SceneItem()
         {
             this.InitializeComponent();
@@ -36,15 +37,15 @@ namespace Aimer
             {
                 case 1:
                     sceneNameText.Text = "场景一";
-                    bitmap.UriSource = new Uri(scene.imgpath1);
+                    bitmap.UriSource = new Uri(scene.scene1.thumbnail);
                     break;
                 case 2:
                     sceneNameText.Text = "场景二";
-                    bitmap.UriSource = new Uri(scene.imgpath2);
+                    bitmap.UriSource = new Uri(scene.scene2.thumbnail);
                     break;
                 case 3:
                     sceneNameText.Text = "场景三";
-                    bitmap.UriSource = new Uri(scene.imgpath3);
+                    bitmap.UriSource = new Uri(scene.scene3.thumbnail);
                     break;
             }
            sceneImage.Source = bitmap;            

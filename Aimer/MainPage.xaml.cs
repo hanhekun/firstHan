@@ -33,27 +33,46 @@ namespace Aimer
         private ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MainPage>();
         public static StreamWriter Writer;
         private DispatcherTimer mTimer = new DispatcherTimer();
+        private DispatcherTimer logoTimer = new DispatcherTimer();
+        private DispatcherTimer focusTimer = new DispatcherTimer();
         string request;
         private string Ip;
-        Windows.Networking.Sockets.StreamSocket socket = new Windows.Networking.Sockets.StreamSocket();
+        Windows.Networking.Sockets.StreamSocket socket;
         public MainPage()
         {
             this.InitializeComponent();
             this.Loaded +=  (s, e) =>
              {
                  frame.Navigate(typeof(VerticalPage));
-                 
-                
              };
+            logoTimer.Tick += logoTimer_Tick;
+            logoTimer.Interval = TimeSpan.FromSeconds(600);
             frame.Navigated += Frame_Navigated;
+            focusTimer.Tick += FocusTimer_Tick;
+            focusTimer.Interval = TimeSpan.FromSeconds(1.5);
+            focusTimer.Start();
+        }
 
+        private void FocusTimer_Tick(object sender, object e)
+        {
+            text.Focus(FocusState.Keyboard);
         }
 
         private void Frame_Navigated(object sender, NavigationEventArgs e)
         {
             LocalIpAsync();
         }
+        protected override void OnPointerPressed(PointerRoutedEventArgs e)
+        {
+            base.OnPointerPressed(e);
 
+            DisLogo();
+        }
+        public void DisLogo()
+        {
+            logoImg.Visibility = Visibility.Collapsed;
+            logoTimer.Start();
+        }
         private async void LocalIpAsync()
         {
             
@@ -64,6 +83,7 @@ namespace Aimer
                 string IPValue = value.ToString();
                 Windows.Networking.HostName serverHost = new Windows.Networking.HostName(IPValue);
                 string serverPort = "1337";
+                socket = new Windows.Networking.Sockets.StreamSocket();
                 await socket.ConnectAsync(serverHost, serverPort);
                 Stream streamOut = socket.OutputStream.AsStreamForWrite();              
                 Writer = new StreamWriter(streamOut);
@@ -90,7 +110,10 @@ namespace Aimer
                 verticalpage.hideImg();
             }
         }
-
+        private async void logoTimer_Tick(object sender, object e)
+        {
+            logoImg.Visibility = Visibility.Visible;
+        }
         private async void MTimer_Tick(object sender, object e)
         {
             try
@@ -100,12 +123,38 @@ namespace Aimer
             }
             catch (Exception ex)
             {
-                serverDisposed.Visibility = Visibility.Visible;
+                int len = ex.Message.Length;
+                if (len == 40)
+                {
+                    serverDisposed.Visibility = Visibility.Visible;
+                    VerticalPage verticalpage = frame.Content as VerticalPage;
+                    verticalpage.HideButton();
+                }
+            }
+        }
+        public async System.Threading.Tasks.Task SenderSceneAsync(string str)
+        {
+            try
+            {
+                await Writer.WriteLineAsync(str);
+                await Writer.FlushAsync();
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 
         private async void connectbutton_ClickAsync(object sender, RoutedEventArgs e)
         {
+            VerticalPage verticalpage = frame.Content as VerticalPage;
+            //verticalpage.AppearImg();
+            //serverIP.Visibility = Visibility.Collapsed;
+            //connectbutton.Visibility = Visibility.Collapsed;
+            //stackPanel.Visibility = Visibility.Collapsed;
+            //serverIP.Visibility = Visibility.Collapsed;
+
+            serverDisposed.Visibility = Visibility.Collapsed;
             TextBox TBox = IP;
             Ip = TBox.Text;
             var settings  = ApplicationData.Current.LocalSettings;
@@ -114,17 +163,18 @@ namespace Aimer
             {
                 Windows.Networking.HostName serverHost = new Windows.Networking.HostName(Ip);
                 string serverPort = "1337";
+                socket = new Windows.Networking.Sockets.StreamSocket();
                 await socket.ConnectAsync(serverHost, serverPort);
-                ConnectSucess.Visibility = Visibility;
                 Stream streamOut = socket.OutputStream.AsStreamForWrite();
                 Writer = new StreamWriter(streamOut);
-                VerticalPage verticalpage = frame.Content as VerticalPage;
+                verticalpage = frame.Content as VerticalPage;
                 verticalpage.AppearImg();
                 //create timer
                 mTimer.Tick += MTimer_Tick;
                 mTimer.Interval = TimeSpan.FromSeconds(5);
                 mTimer.Start();
 
+                serverIP.Visibility = Visibility.Collapsed;
                 connectbutton.Visibility = Visibility.Collapsed;
                 stackPanel.Visibility = Visibility.Collapsed;
                 serverIP.Visibility = Visibility.Collapsed;
@@ -132,12 +182,27 @@ namespace Aimer
             }
             catch (Exception ex)
             {
-
+                
             }
            
         }
+        public string getText()
+        {
+            string t = text.Text;
+            text.Text = "";
+            return t;
+        }
 
-       
+        private void serverDisposed_Click(object sender, RoutedEventArgs e)
+        {
+            serverDisposed.Visibility = Visibility.Collapsed;
+            connectbutton.Visibility = Visibility.Visible;
+            stackPanel.Visibility = Visibility.Visible;
+            serverIP.Visibility = Visibility.Visible;
 
+            VerticalPage verticalpage = frame.Content as VerticalPage;
+            verticalpage.hideImg();
+
+        }
     }
 }

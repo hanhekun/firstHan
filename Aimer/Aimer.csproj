@@ -22,6 +22,7 @@
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
     <AppxPackageDir>C:\Users\DELL\Desktop\</AppxPackageDir>
+    <PackageCertificateThumbprint>3AFBB0B3DBCA7DDAFFC74F8352358914FE87FC8B</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -100,6 +101,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BarcodeScanner.cs" />
     <Compile Include="ScenButton.xaml.cs">
       <DependentUpon>ScenButton.xaml</DependentUpon>
     </Compile>
@@ -126,8 +128,8 @@
     <None Include="Aimer_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\AimerLogo.jpg" />
     <Content Include="Assets\Images\quan.png" />
-    <Content Include="Assets\Images\sceneimagebg.png" />
     <Content Include="Assets\Images\secondbg.png" />
     <Content Include="Assets\Images\selectborder.png" />
     <Content Include="Assets\Images\x.png" />

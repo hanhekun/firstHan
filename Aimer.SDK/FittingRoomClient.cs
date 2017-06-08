@@ -32,11 +32,13 @@ namespace Aimer.SDK
             using (HttpClient http=new HttpClient())
             {
 
-               var data = await http.GetStringAsync("http://mobiletest.aimer.com.cn:8888/fittingroom/getscenes?sign=" + Sign);
+                //var data = await http.GetStringAsync("http://mobiletest.aimer.com.cn:8888/fittingroom/getscenes?sign=" + Sign);
 
-
-               return JsonConvert.DeserializeObject<ScenResponse>(data);
-
+                var data = await http.GetStringAsync("http://www.aimer.com.cn/fittingroom/getscenes?sign=" + Sign);
+                
+                var a = JsonConvert.DeserializeObject<ScenResponse>(data);
+               
+                return a;
             }
 
         }
@@ -49,8 +51,8 @@ namespace Aimer.SDK
             using (HttpClient http = new HttpClient())
             {
 
-                var data = await http.GetStringAsync($"http://mobiletest.aimer.com.cn:8888/fittingroom/getgoodsscene?g_id={str}&sign=" + Sign);
-
+                // var data = await http.GetStringAsync($"http://mobiletest.aimer.com.cn:8888/fittingroom/getgoodsscene?g_id={str}&sign=" + Sign);
+                var data = await http.GetStringAsync($"http://www.aimer.com.cn/fittingroom/getgoodsscene?g_id={str}&sign=" + Sign);
 
                 return JsonConvert.DeserializeObject<GoodSceneResponse>(data);
 

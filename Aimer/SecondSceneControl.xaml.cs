@@ -51,8 +51,11 @@ namespace Aimer
             mSceneId = sceneId; 
             scenePanel.Children.Clear();
             Thickness margin = new Thickness(0, 0, 20, 0);
-            SceneItem item1 = new SceneItem();            
+            
+            SceneItem item1 = new SceneItem(); 
+            
             item1.Margin = margin;
+            
             item1.SetData(scene, 1);
 
             SceneItem item2 = new SceneItem();            
@@ -64,8 +67,6 @@ namespace Aimer
             scenePanel.Children.Add(item2);
             scenePanel.Children.Add(item3);
             AddListener();
-
-
         }
 
         private void AddListener()
@@ -99,7 +100,9 @@ namespace Aimer
                 var writer = MainPage.Writer;
                 try
                 {
-                    await writer.WriteLineAsync($"scene,{mSceneId},{index}");
+                      await writer.WriteLineAsync($"scene,{mSceneId},{index}");
+                     // await writer.WriteLineAsync($"{index}");
+
                     await writer.FlushAsync();
                 }
                 catch(Exception ex)

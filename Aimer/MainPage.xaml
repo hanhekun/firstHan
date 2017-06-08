@@ -9,8 +9,10 @@
 
     <Viewbox>
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="800" Height="1280">
+
+            <Image Width="800" Height="1280" Source="Assets\AimerLogo.jpg" Canvas.ZIndex="2" x:Name="logoImg"></Image>
             <Button x:Name="connectFalse" Content="" Margin="20,970,0,17" Opacity="0.6" Visibility="Collapsed" ></Button>
-            <Button Canvas.ZIndex="3" x:Name="serverDisposed" FontSize="20" Content="与服务器断开连接，请检查设备" Margin="20,970,0,178" Visibility="Collapsed"></Button>
+            <Button Canvas.ZIndex="3" x:Name="serverDisposed" FontSize="20" Content="与服务器断开连接，请检查设备" Margin="20,970,0,178" Visibility="Collapsed" Click="serverDisposed_Click"></Button>
             <Frame x:Name="frame" />
             <StackPanel x:Name="stackPanel" Orientation="Vertical" BorderThickness="0,0,0,0" Visibility="Collapsed">
                 <StackPanel Height="52" Orientation="Horizontal" Margin="10,1010,10,30" HorizontalAlignment="Center">
@@ -22,6 +24,7 @@
                 <Button x:Name="serverIP" Width="500" Height="52" Visibility="Collapsed" Content="连接失败，请重新链接" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,10,0,0" />
 
             </StackPanel>
+            <TextBox HorizontalAlignment="Right" Height="29" TextWrapping="Wrap" x:Name="text" VerticalAlignment="Top" Width="112" Margin="0,1238,0,0" Visibility="Collapsed"/>
         </Grid>
     </Viewbox>
 

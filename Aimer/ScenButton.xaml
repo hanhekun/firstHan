@@ -24,13 +24,14 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </UserControl.Resources>
-    <StackPanel HorizontalAlignment="Center">
+    <StackPanel x:Name="sp" HorizontalAlignment="Center">
         <Canvas Name="icon" Height="124" Width="121" RenderTransformOrigin="0.5,0.5">
             <Canvas.RenderTransform>
                 <CompositeTransform/>
             </Canvas.RenderTransform>
-            <Image  Width="121" Height="121" Source="Assets/Images/quan.png" />
-            <Image x:Name="image" Width="83" Height="77" Source="Assets/Images/爱心.png" Canvas.Left="20" Canvas.Top="18" />
+            <Viewbox Width="121" Height="121">
+                <Image x:Name="image"  Source="Assets/Images/爱心.png"/>
+            </Viewbox>
         </Canvas>
         <TextBlock x:Name="seneNameText" FontSize="17" Foreground="#c8c8c8" TextAlignment="Center"/>
         <TextBlock x:Name="seneNameEnText" FontSize="17" Foreground="#c8c8c8" Text="home " TextAlignment="Center" />

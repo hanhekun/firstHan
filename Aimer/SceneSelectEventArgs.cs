@@ -10,9 +10,13 @@ namespace Aimer
     {
         public int Index { get; set; }
 
+        public string Scene { get; set; }
+
         public SceneSelectEventArgs(int index)
         {
             Index = index;
+            //Scene = scene;
         }
+
     }
 }

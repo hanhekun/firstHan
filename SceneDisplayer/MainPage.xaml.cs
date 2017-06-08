@@ -9,6 +9,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.Core;
 using Windows.Networking.Sockets;
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -31,15 +32,20 @@ namespace SceneDisplayer
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private Boolean isVideo=false;
         private ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MainPage>();
         private bool listening;
         private Dictionary<string, Scene> mAllScens;
         private DispatcherTimer mTimer = new DispatcherTimer();
+        private DispatcherTimer defaultTimer = new DispatcherTimer();
+        private Storyboard story;
+
         private int play=0;
-        private IList<string> scenBitmaps = new List<string>();
+        private IList<ScenePath> scenBitmaps = new List<ScenePath>();
         private bool isPlaying=false;
         private DateTime mStartTime = DateTime.Now;
         private Boolean isConnect = false;
+        private string scene;
         public MainPage()
         {
             this.InitializeComponent();          
@@ -47,8 +53,16 @@ namespace SceneDisplayer
             CreateServerAsync();
             
             mTimer.Tick += MTimer_Tick;
-            mTimer.Interval = TimeSpan.FromSeconds(5);
-           
+            mTimer.Interval = TimeSpan.FromSeconds(8);
+            defaultTimer.Tick += DefaultTimer_Tick;
+            defaultTimer.Interval = TimeSpan.FromSeconds(600);
+            GetAllScenes();
+
+        }
+
+        private void DefaultTimer_Tick(object sender, object e)
+        {
+            GetAllScenes();
         }
 
         private void createImg1()
@@ -59,7 +73,7 @@ namespace SceneDisplayer
             {
                 bitmap.UriSource = new Uri("ms-appx:///Assets/loadfailed.jpg");
             }
-            bitmap.UriSource = new Uri(scenBitmaps[0]);
+            bitmap.UriSource = new Uri(scenBitmaps[0].imgpath);
             img1.Source = bitmap;
 
             this.scenePanel.Children.Add(img1);
@@ -72,19 +86,37 @@ namespace SceneDisplayer
 
         private void MTimer_Tick(object sender, object e)
         {
-            if (isPlaying || DateTime.Now.Subtract(mStartTime).TotalSeconds < 5)
+            if(scenePanel.Children[0] is MediaElement)
+            {
+                MediaElement video = scenePanel.Children[0] as MediaElement;
+                
+            }
+            if (isPlaying || DateTime.Now.Subtract(mStartTime).TotalSeconds < 8)
                 return;
             play++;
             if (play== scenBitmaps.Count)
             {
                 play = 0;
+            } 
+
+            if (scenBitmaps.Count > 0)
+            {
+                if (scenBitmaps[play].type == "图片")
+                {
+                    Image sceneImage2 = start(play);
+                    story = FadeInEffect(scenePanel.Children[0], sceneImage2);
+                }
+                else
+                {
+                    MediaElement video2 = startVideo(play);
+                    story = FadeInEffect(scenePanel.Children[0], video2);
+                }
+                isPlaying = true;
+                story.Completed += Story_Completed;
+                mStartTime = DateTime.Now;
+                story.Begin();
             }
-            Image sceneImage2 = start(play);
-            Storyboard story= FadeInEffect(scenePanel.Children[0], sceneImage2);
-            isPlaying = true;
-            story.Completed += Story_Completed;
-            mStartTime = DateTime.Now;
-            story.Begin();
+            
         }
 
         private void Story_Completed(object sender, object e)
@@ -96,14 +128,9 @@ namespace SceneDisplayer
 
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            GetAllScenes();
-        }
-
         private async void GetAllScenes()
         {
+            scenBitmaps.Clear();
             FittingRoomClient room = new FittingRoomClient();
             try
             {
@@ -111,18 +138,99 @@ namespace SceneDisplayer
                 
                 if (result.response == "getscenes")
                 {
-                    mAllScens = result.scenslist;
-                    for (var i = 0; i < mAllScens.Count; i++)
+                    var img1Type = result.scenslist.ElementAt(6).scene1.type;
+                    var path1 = result.scenslist.ElementAt(6).scene1;
+                    var path2 = result.scenslist.ElementAt(6).scene2;
+                    var path3 = result.scenslist.ElementAt(6).scene3;
+                    
+                    if (img1Type == "图片")
                     {
-                        var Path1 = mAllScens.ElementAt(i).Value.imgpath1;
-                        var Path2 = mAllScens.ElementAt(i).Value.imgpath2;
-                        var Path3 = mAllScens.ElementAt(i).Value.imgpath3;
-                        Path1 = await  LoadBitmap(Path1, mAllScens.ElementAt(i).Key, "1");
-                        scenBitmaps.Add(Path1);
-                        Path2 = await LoadBitmap(Path2, mAllScens.ElementAt(i).Key, "2");
-                        scenBitmaps.Add(Path2);
-                        Path3 = await LoadBitmap(Path3, mAllScens.ElementAt(i).Key, "3");
-                        scenBitmaps.Add(Path3);
+                        path1.imgpath = await LoadBitmap(path1.imgpath.ToString(), "7", "1","jpg");
+                        scenBitmaps.Add(path1);
+                        createImg1();
+                    }
+                    if (img1Type == "视频")
+                    {
+                        scenBitmaps.Add(path1);
+                        MediaElement video = new MediaElement();
+                        Uri uri = new Uri(result.scenslist.ElementAt(0).scene1.imgpath);
+                        video.Source = uri;
+                        //video.Source = MediaSource.CreateFromUri(uri);
+                        video.AutoPlay = true;
+                        mTimer.Stop();
+                        scenePanel.Children.Add(video);
+                    }
+                    scenBitmaps.Add(path2);
+                    scenBitmaps.Add(path3);
+                }
+                mTimer.Start();
+            }
+            catch (Exception e)
+            {
+                internetSourceFailed.Visibility = Visibility.Visible;
+                Log.Error("get scens error", e);
+            }
+        }
+        private async void ChangeScenes(string scene)
+        {
+            scenBitmaps.Clear();
+            play = 0;
+            FittingRoomClient room = new FittingRoomClient();
+            try
+            {
+                var result = await room.GetScenesAsyc();
+
+                if (result.response == "getscenes")
+                {
+                    List<ScenePath> scenepath = new List<ScenePath>();
+                    
+                    foreach (var i in result.scenslist)
+                    {
+                        
+                        if (i.flag== scene)
+                        {
+                            var img1Type = i.scene1.type;
+
+                            var path1 = i.scene1;
+                            var path2 = i.scene2;
+                            var path3 = i.scene3;
+                            
+                            if (img1Type == "图片")
+                            {
+                                path1.imgpath = await LoadBitmap(path1.imgpath.ToString(), scene, "1","jpg");
+                                scenBitmaps.Add(path1);
+                                createImg1();
+                            }
+                            else
+                            {
+                                MediaElement video = new MediaElement();
+                                Uri uri = new Uri(i.scene1.imgpath);
+                                video.Source = uri;
+                                //video.Source = MediaSource.CreateFromUri(uri);
+                                video.AutoPlay = true;
+                                scenePanel.Children.Add(video);
+                                scenBitmaps.Add(path1);
+                            }
+                            if (i.scene2.type == "图片")
+                            {
+                                path2.imgpath = await LoadBitmap(path2.imgpath.ToString(), scene, "2","jpg");
+                            }
+                            else
+                            {
+                                path2.imgpath = await LoadBitmap(path2.imgpath.ToString(), scene, "2", "mp4");
+                            }
+                            if (i.scene3.type == "图片")
+                            {
+                                path3.imgpath = await LoadBitmap(path3.imgpath.ToString(), scene, "3", "mp4");
+                            }
+                            else
+                            {
+                                path3.imgpath = await LoadBitmap(path3.imgpath.ToString(), scene, "3", "mp4");
+                            }
+
+                            scenBitmaps.Add(path2);
+                            scenBitmaps.Add(path3);
+                        }   
                     }
                     createImg1();
 
@@ -136,12 +244,12 @@ namespace SceneDisplayer
             }
         }
 
-        private async Task<string> LoadBitmap(string path, string sceneId, string sceneIndex)
+        private async Task<string> LoadBitmap(string path, string sceneId, string sceneIndex,string type)
         {
             try
             {
                 var folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Scen", CreationCollisionOption.OpenIfExists);
-                var filePath = folder.Path + "/" + sceneId + "_" + sceneIndex + ".jpg";
+                var filePath = folder.Path + "/" + sceneId + "_" + sceneIndex + "."+type;
                 if (File.Exists(filePath))
                     return filePath;
 
@@ -174,23 +282,27 @@ namespace SceneDisplayer
                 {
                     await Task.Delay(1000);
                 }
-                int sceneId = int.Parse(data[1]);
                 int scenIndex = int.Parse(data[2]);
                 BitmapImage bitmap = new BitmapImage();
 
-                int index = (sceneId - 1) * 3 + scenIndex - 2;
-                if (index == -1)
-                {
-                    bitmap.UriSource = new Uri(scenBitmaps[0]);
-                }
-                else
-                {
-                    bitmap.UriSource = new Uri(scenBitmaps[index]);
-                }
+                int index = scenIndex;
+                
+                bitmap.UriSource = new Uri(scenBitmaps[index-1].imgpath);
+
                 if (index <= scenBitmaps.Count)
                 {
-                    Image sceneImage2 = start(index);
-                    Storyboard story = FadeInEffect(scenePanel.Children[0], sceneImage2);
+
+                    Image sceneImage2 = start(index-1);
+                    MediaElement video2 = startVideo(index - 1);
+                    if (scenBitmaps[index - 1].type == "图片")
+                    {
+                        story = FadeInEffect(scenePanel.Children[0], sceneImage2);
+                    }
+                    else
+                    {
+                        story = FadeInEffect(scenePanel.Children[0], video2);
+
+                    }
                     isPlaying = true;
                     story.Completed += Story_Completed;
                     mStartTime = DateTime.Now;
@@ -232,32 +344,73 @@ namespace SceneDisplayer
             }              
             while (listening)
             {
+                string request;
+                try
+                {
+                    request = await reader.ReadLineAsync();
+                }
+                catch (Exception e)
+                {
+                    request= null;
+                }
                 await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
-                {
-                    notConnect.Visibility = Visibility.Collapsed;
-                    disposeConnect.Visibility = Visibility.Collapsed;
-                }));
-                string request = await reader.ReadLineAsync();
-                if (request == null)
-                {
+                    {
+                        notConnect.Visibility = Visibility.Collapsed;
+                        disposeConnect.Visibility = Visibility.Collapsed;
+                        loadFail.Visibility = Visibility.Collapsed;
+
+                        switch (request)
+                        {
+                            case "家居":
+                            case "泳衣":
+
+                            case "休闲":
+                            case "户外":
+                            case "可爱":
+                            case "绅士":
+                                scene = request;
+                                defaultTimer.Start();
+                                ChangeScenes(scene);
+                                break;
+                            case "testConnect":
+                                break;
+                        }
+                        if (request.Contains("scene"))
+                        {
+                            if (isVideo == true)
+                            {
+                                foreach(var i in scenePanel.Children)
+                                {
+                                    if(i is MediaElement)
+                                    {
+                                        var video = i as MediaElement;
+                                        video.Stop();
+                                        mTimer.Start();
+                                    }
+                                }
+                            }
+                        }
+                    }));
+                    if (request == null)
+                    {
+                        await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
+                        {
+                            disposeConnect.Visibility = Visibility.Visible;
+                            isConnect = false;
+                        
+                        }));
+                    
+                        break;
+                    }
+                              
+                  
                     await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
                     {
-                        disposeConnect.Visibility = Visibility.Visible;
-                        isConnect = false;
+                    
+                        appearAsync(request);
                     }));
-                    break;
-                }
-                              
-                if(request== "testConnect")
-                {
-
-                }
-                    
-                await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
-                {
-                    
-                    appearAsync(request);
-                }));
+               
+                
             }
 
         }
@@ -286,26 +439,53 @@ namespace SceneDisplayer
         }
         private Image start(int play)
         {
+            
             Image img2 = new Image();
             BitmapImage bitmap = new BitmapImage();
-            if (play+1 == scenBitmaps.Count)
+            if (play == scenBitmaps.Count)
             {
-                play = -1;
+                play = 0;
             }
-            bitmap.UriSource = new Uri(scenBitmaps[play+1]);
+            
+            bitmap.UriSource = new Uri(scenBitmaps[play].imgpath);
             if (bitmap.UriSource==null)
             {
-                bitmap.UriSource = new Uri("ms-appx:///Assets/loadfailed.jpg");
-            }
-
+                loadFail.Visibility = Visibility.Visible;
+            }           
             img2.Source = bitmap;
             img2.Opacity = 0;
             this.scenePanel.Children.Add(img2);
             return img2;
             
         }
-        
+        private MediaElement startVideo(int play)
+        {
+            MediaElement video = new MediaElement();
+            video.AutoPlay = true;
+            if (play == scenBitmaps.Count)
+            {
+                play = 0;
+            }
+            mTimer.Stop();
+            isVideo = true;
+            video.MediaEnded += Video_MediaEnded;
+            Uri uri = new Uri(scenBitmaps[play].imgpath);
+            video.Source = uri;
+            //video.Source= MediaSource.CreateFromUri(uri);
+            if (uri== null)
+            {
+                loadFail.Visibility = Visibility.Visible;
+            }
+            //video.Opacity = 0;
+            this.scenePanel.Children.Add(video);
+            return video;
+        }
 
+        private void Video_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            mTimer.Start();
+            isVideo = false;
+        }
     }
 
 }

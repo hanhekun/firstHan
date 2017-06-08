@@ -10,6 +10,6 @@ namespace Aimer.SDK
     public class ScenResponse
     {
         public string response { get; set; }
-        public Dictionary<string,Scene> scenslist { get; set; }
+        public List<Scene> scenslist { get; set; }
     }
 }
