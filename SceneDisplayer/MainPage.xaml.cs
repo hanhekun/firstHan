@@ -364,9 +364,9 @@ namespace SceneDisplayer
                             case "家居":
                             case "泳衣":
 
-                            case "休闲":
-                            case "户外":
                             case "可爱":
+                            case "性感":
+                            case "户外":
                             case "绅士":
                                 scene = request;
                                 defaultTimer.Start();
@@ -375,21 +375,7 @@ namespace SceneDisplayer
                             case "testConnect":
                                 break;
                         }
-                        if (request.Contains("scene"))
-                        {
-                            if (isVideo == true)
-                            {
-                                foreach(var i in scenePanel.Children)
-                                {
-                                    if(i is MediaElement)
-                                    {
-                                        var video = i as MediaElement;
-                                        video.Stop();
-                                        mTimer.Start();
-                                    }
-                                }
-                            }
-                        }
+                        
                     }));
                     if (request == null)
                     {
@@ -401,7 +387,25 @@ namespace SceneDisplayer
                         }));
                     
                         break;
+                }
+                else
+                {
+                    if (request.Contains("scene"))
+                    {
+                        if (isVideo == true)
+                        {
+                            foreach (var i in scenePanel.Children)
+                            {
+                                if (i is MediaElement)
+                                {
+                                    var video = i as MediaElement;
+                                    video.Stop();
+                                    mTimer.Start();
+                                }
+                            }
+                        }
                     }
+                }
                               
                   
                     await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, new Windows.UI.Core.DispatchedHandler(() =>
@@ -430,7 +434,7 @@ namespace SceneDisplayer
             daOut.Duration = TimeSpan.FromMilliseconds(1500);
             story.Children.Add(daIn);
             story.Children.Add(daOut);
-           Storyboard.SetTarget(daIn, cur);
+            Storyboard.SetTarget(daIn, cur);
             Storyboard.SetTarget(daOut, pre);
             Storyboard.SetTargetProperty(daIn, "Opacity");
             Storyboard.SetTargetProperty(daOut, "Opacity");
@@ -453,7 +457,7 @@ namespace SceneDisplayer
                 loadFail.Visibility = Visibility.Visible;
             }           
             img2.Source = bitmap;
-            img2.Opacity = 0;
+            
             this.scenePanel.Children.Add(img2);
             return img2;
             
@@ -466,25 +470,22 @@ namespace SceneDisplayer
             {
                 play = 0;
             }
-            mTimer.Stop();
             isVideo = true;
             video.MediaEnded += Video_MediaEnded;
             Uri uri = new Uri(scenBitmaps[play].imgpath);
             video.Source = uri;
-            //video.Source= MediaSource.CreateFromUri(uri);
             if (uri== null)
             {
                 loadFail.Visibility = Visibility.Visible;
             }
-            //video.Opacity = 0;
             this.scenePanel.Children.Add(video);
             return video;
         }
 
         private void Video_MediaEnded(object sender, RoutedEventArgs e)
         {
-            mTimer.Start();
-            isVideo = false;
+            MediaElement video = sender as MediaElement;
+            video.Play();
         }
     }
 
