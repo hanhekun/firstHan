@@ -62,13 +62,13 @@ namespace Aimer
                 case "泳衣":
                     mSceneId = "2";
                     break;
-                case "休闲":
+                case "可爱":
                     mSceneId = "3";
                     break;
-                case "户外":
+                case "性感":
                     mSceneId = "4";
                     break;
-                case "可爱":
+                case "户外":
                     mSceneId = "5";
                     break;
                 case "绅士":

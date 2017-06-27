@@ -50,7 +50,6 @@ namespace Aimer
 
             timer.Tick += Timer_Tick;
             timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Start();
 
             scanner.BarcodeScanned += Scanner_BarcodeScanned;
             Task.Factory.StartNew(async () =>
@@ -66,40 +65,40 @@ namespace Aimer
 
         private void VetrtcalPage_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
-            barCode.Focus(FocusState.Pointer);
+           // barCode.Focus(FocusState.Pointer);
         }
 
         private void Timer_Tick(object sender, object e)
         {
-
+            barCode.Focus(FocusState.Pointer);
         }
 
         private void WebView_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)
         {
-            barCode.Focus(FocusState.Pointer);
+            //barCode.Focus(FocusState.Pointer);
             sender.Navigate(args.Uri);
             args.Handled = true;
         }
 
         private void VetrtcalPage_LostFocus(object sender, RoutedEventArgs e)
         {
-            barCode.Focus(FocusState.Programmatic);
+           // barCode.Focus(FocusState.Programmatic);
         }
 
         private void VetrtcalPage_GotFocus(object sender, RoutedEventArgs e)
         {
-            barCode.Focus(FocusState.Programmatic);
+            timer.Start();           
         }
 
         private void VetrtcalPage_DOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
         {
-            barCode.Focus(FocusState.Programmatic);
+            //barCode.Focus(FocusState.Programmatic);
             
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            barCode.Focus(FocusState.Programmatic);
+            //barCode.Focus(FocusState.Programmatic);
             base.OnNavigatedTo(e);
             Window.Current.CoreWindow.CharacterReceived += CoreWindow_CharacterReceived;
         }
@@ -246,13 +245,13 @@ namespace Aimer
                     s = "泳衣";
                     break;
                 case "3":
-                    s = "休闲";
+                    s = "可爱";
                     break;
                 case "4":
-                    s = "户外";
+                    s = "性感";
                     break;
                 case "5":
-                    s = "可爱";
+                    s = "户外";
                     break;
                 case "6":
                     s = "绅士";
@@ -269,10 +268,12 @@ namespace Aimer
         {
             sceneSelectImg.Visibility = Visibility.Collapsed;
             buttonGrid.Visibility = Visibility.Collapsed;
+            secondSceneControl.Hide();
         }
         public void HideButton()
         {
             secondSceneControl.Visibility = Visibility.Collapsed;
+            secondSceneControl.Hide();
         }
         public void AppearImg()
         {
