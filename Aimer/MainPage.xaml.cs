@@ -122,21 +122,19 @@ namespace Aimer
                     connectFalse.Visibility = Visibility.Visible;
                     connectFalse.Content = reader;
                 }
-
+                errorTime = 0;
             }
             catch (Exception e)
             {
                 errorTimer.Start();
-                if (errorTime > 33)
+                if (errorTime > 40)
                 {
-                    
                     connectbutton.Visibility = Visibility.Visible;
                     stackPanel.Visibility = Visibility.Visible;
                     serverIP.Visibility = Visibility.Visible;
                     VerticalPage verticalpage = frame.Content as VerticalPage;
                     verticalpage.hideImg();
                 }
-
             }
         }
         private async void logoTimer_Tick(object sender, object e)

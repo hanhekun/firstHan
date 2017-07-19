@@ -36,15 +36,15 @@ namespace Aimer
             switch (index)
             {
                 case 1:
-                    sceneNameText.Text = "场景一";
+                    sceneNameText.Text = scene.flag+"1";
                     bitmap.UriSource = new Uri(scene.scene1.thumbnail);
                     break;
                 case 2:
-                    sceneNameText.Text = "场景二";
+                    sceneNameText.Text = scene.flag + "2";
                     bitmap.UriSource = new Uri(scene.scene2.thumbnail);
                     break;
                 case 3:
-                    sceneNameText.Text = "场景三";
+                    sceneNameText.Text = scene.flag + "3";
                     bitmap.UriSource = new Uri(scene.scene3.thumbnail);
                     break;
             }

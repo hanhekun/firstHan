@@ -251,29 +251,30 @@ namespace SceneDisplayer
 
         private async Task<string> LoadBitmap(string path,string type)
         {
-            return path;
-            //try
-            //{
-            //    var folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Scen", CreationCollisionOption.OpenIfExists);
-            //    string str = folder.Path.Replace(":", "").Replace(".", "").Replace("?", "").Replace("\\", "").Replace("-", "");
-            //    var filePath = folder.Path + str.Substring(str.Length - 5) + "." + type;
-            //    if (File.Exists(filePath))
-            //        return filePath;
 
-            //    var tmp = folder.Path + ".download";
-            //    using (HttpClient http = new HttpClient())
-            //    using (FileStream fs = File.OpenWrite(tmp))
-            //    {
-            //        var stream = await http.GetStreamAsync(path);
-            //        await stream.CopyToAsync(fs);
-            //    }
-            //    File.Move(tmp, filePath);
-            //    return filePath;
-            //}
-            //catch (Exception e)
-            //{
-            //    return path;
-            //}
+            try
+            {
+                var folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Scen", CreationCollisionOption.OpenIfExists);
+                string str = folder.Path.Replace(":", "").Replace(".", "").Replace("?", "").Replace("\\", "").Replace("-", "");
+                
+                var filePath = folder.Path + str + "." + type;
+                if (File.Exists(filePath))
+                    return filePath;
+
+                var tmp = folder.Path + ".download";
+                using (HttpClient http = new HttpClient())
+                using (FileStream fs = File.OpenWrite(tmp))
+                {
+                    var stream = await http.GetStreamAsync(path);
+                    await stream.CopyToAsync(fs);
+                }
+                File.Move(tmp, filePath);
+                return filePath;
+            }
+            catch (Exception e)
+            {
+                return path;
+            }
         }
 
 

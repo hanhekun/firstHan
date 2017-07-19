@@ -147,12 +147,9 @@ namespace Aimer
                 {
                     str = s;
                 }
-                //str = "14122329270464";
                 if (str != ""){
                     var targetProduct = string.Format(ScanFormat, str);
                     Uri uri = new Uri(targetProduct);
-                    //Uri uri = new Uri("http://www.aimer.com.cn/goods/16092682445101");
-
                      vetrtcalPage.Source = (uri);
                     hideGoodsScene();
                     getGoodsScenes(str);

@@ -50,7 +50,7 @@ namespace Aimer
             RemoveListener();
             mSceneId = sceneId; 
             scenePanel.Children.Clear();
-            Thickness margin = new Thickness(0, 0, 20, 0);
+            Thickness margin = new Thickness(0, 0, 30, 0);
             
             SceneItem item1 = new SceneItem(); 
             

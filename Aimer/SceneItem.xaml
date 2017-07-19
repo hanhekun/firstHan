@@ -6,12 +6,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Height="163"
+    Height="210"
     Width="182">
 
-    <Grid Background="White">
-        <Image x:Name="sceneImage" Height="110" Width="182" VerticalAlignment="Top" />
-        <Image x:Name="selectBorder" Width="182" Height="110" Source="Assets/Images/selectborder.png"  VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Collapsed"/>
-        <TextBlock x:Name="sceneNameText" Text="场景二"  FontSize="24" Foreground="#bbb9c7" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10" />
+    <Grid Margin="0,0,0,-20">
+        <Image x:Name="sceneImage" Stretch="Fill" Height="166" Width="184" VerticalAlignment="Top" />
+        <Image x:Name="selectBorder" Width="184" Stretch="Fill" Height="166" Source="Assets/Images/selectborder.png"  VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Collapsed"/>
+        <TextBlock x:Name="sceneNameText" Text="场景二"  FontSize="25" Foreground="White" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,15" />
     </Grid>
 </UserControl>
