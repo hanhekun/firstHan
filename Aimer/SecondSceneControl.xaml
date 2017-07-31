@@ -5,19 +5,24 @@
     xmlns:local="using:Aimer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Windows.UI.Xaml.Controls"
     mc:Ignorable="d"
     Height="284"
     Width="800">
 
-    <Grid>
+    <Grid >
         <Image Source="Assets/Images/greybg.png" Width="800" Height="284"/>
-        <StackPanel x:Name="scenePanel" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
 
-        </StackPanel>
-        <Button x:Name="close" HorizontalAlignment="Right" VerticalAlignment="Top"  Click="close_Click">
+        <ScrollViewer x:Name="scrollViewer" Width="800" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+            <StackPanel Margin="102, 0, 102, 0" x:Name="scenePanel" Orientation="Horizontal">
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <Button x:Name="close" HorizontalAlignment="Right" VerticalAlignment="Top"  Width="24" Height="27" Click="close_Click" Margin="0,20,45,0">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
-                    <Image x:Name="ContentPresenter" Source="Assets/Images/x.png" Width="24" Height="27" Margin="25,25,25,40"/>
+                    <Image x:Name="ContentPresenter" Source="Assets/Images/closeBtn.png" />
                 </ControlTemplate>
             </Button.Template>
         </Button>

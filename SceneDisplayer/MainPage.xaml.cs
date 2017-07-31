@@ -254,22 +254,22 @@ namespace SceneDisplayer
 
             try
             {
-                var folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Scen", CreationCollisionOption.OpenIfExists);
-                string str = folder.Path.Replace(":", "").Replace(".", "").Replace("?", "").Replace("\\", "").Replace("-", "");
+                //var folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Scen", CreationCollisionOption.OpenIfExists);
+                //string str = folder.Path.Replace(":", "").Replace(".", "").Replace("?", "").Replace("\\", "").Replace("-", "");
                 
-                var filePath = folder.Path + str + "." + type;
-                if (File.Exists(filePath))
-                    return filePath;
+                //var filePath = folder.Path + str + "." + type;
+                //if (File.Exists(filePath))
+                //    return filePath;
 
-                var tmp = folder.Path + ".download";
-                using (HttpClient http = new HttpClient())
-                using (FileStream fs = File.OpenWrite(tmp))
-                {
-                    var stream = await http.GetStreamAsync(path);
-                    await stream.CopyToAsync(fs);
-                }
-                File.Move(tmp, filePath);
-                return filePath;
+                //var tmp = folder.Path + ".download";
+                //using (HttpClient http = new HttpClient())
+                //using (FileStream fs = File.OpenWrite(tmp))
+                //{
+                //    var stream = await http.GetStreamAsync(path);
+                //    await stream.CopyToAsync(fs);
+                //}
+                //File.Move(tmp, filePath);
+                return path;
             }
             catch (Exception e)
             {
@@ -280,17 +280,48 @@ namespace SceneDisplayer
 
         private async Task appearAsync(string request)
         {
-
+            if (request == "testConnect"||request==null)
+                return;
             string[] data = request.Split(new char[] { ',' });
+
             string action = data[0];
+            //add
+            if (data[2] != null)
+             {                
+                var sceneId =(int.Parse(data[2])-1)/3+1;
+                string myscene = "";
+                switch (sceneId)
+                {
+                    case 1:
+                        myscene = "家居";
+                        break;
+                    case 2:
+                        myscene = "泳衣";
+                        break;
+                    case 3:
+                        myscene = "可爱";
+                        break;
+                    case 4:
+                        myscene = "性感";
+                        break;
+                    case 5:
+                        myscene = "户外";
+                        break;
+                    case 6:
+                        myscene = "绅士";
+                        break;
+                }
+                ChangeScenes(myscene);
+            }
             if (action == "scene")
             {                
 
                 if (isPlaying)
                 {
-                    await Task.Delay(1000);
+                    await Task.Delay(600);
                 }
-                int scenIndex = int.Parse(data[2]);
+                //int scenIndex = int.Parse(data[2]);
+                int scenIndex=(int.Parse(data[2])) %3;
                 BitmapImage bitmap = new BitmapImage();
 
                 int index = scenIndex;
@@ -370,7 +401,8 @@ namespace SceneDisplayer
                         notConnect.Visibility = Visibility.Collapsed;
                         disposeConnect.Visibility = Visibility.Collapsed;
                         loadFail.Visibility = Visibility.Collapsed;
-
+                        if (request == "testConnect")
+                            return;
                         switch (request)
                         {
                             case "家居":

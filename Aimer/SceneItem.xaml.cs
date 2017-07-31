@@ -22,7 +22,7 @@ namespace Aimer
     public sealed partial class SceneItem : UserControl
     {
         public event EventHandler Click;
-        private int mIndex;
+        private int mIndex=0;
         //private string scene;
         public SceneItem()
         {
@@ -31,7 +31,29 @@ namespace Aimer
 
         public void SetData(Scene scene, int index)
         {
-            mIndex = index;
+            int sceindex=0;
+            switch (scene.flag)
+            {
+                case "家居":
+                    sceindex = 0;
+                    break;
+                case "泳衣":
+                    sceindex = 1;
+                    break;
+                case "可爱":
+                    sceindex = 2;
+                    break;
+                case "性感":
+                    sceindex = 3;
+                    break;
+                case "户外":
+                    sceindex = 4;
+                    break;
+                case "绅士":
+                    sceindex = 5;
+                    break;
+            }
+            mIndex = 3*sceindex+index;
             BitmapImage bitmap = new BitmapImage();
             switch (index)
             {
@@ -70,9 +92,16 @@ namespace Aimer
                 Click(this, new SceneSelectEventArgs(mIndex));                  
         }
 
+        
         protected override void OnPointerPressed(PointerRoutedEventArgs e)
         {
             base.OnPointerPressed(e);
+            
+        }
+
+        protected override void OnPointerReleased(PointerRoutedEventArgs e)
+        {
+            base.OnPointerReleased(e);
             RaiseClickEvent();
         }
 

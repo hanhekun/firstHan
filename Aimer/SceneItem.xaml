@@ -10,8 +10,8 @@
     Width="182">
 
     <Grid Margin="0,0,0,-20">
-        <Image x:Name="sceneImage" Stretch="Fill" Height="166" Width="184" VerticalAlignment="Top" />
-        <Image x:Name="selectBorder" Width="184" Stretch="Fill" Height="166" Source="Assets/Images/selectborder.png"  VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Collapsed"/>
-        <TextBlock x:Name="sceneNameText" Text="场景二"  FontSize="25" Foreground="White" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,15" />
+        <Image x:Name="sceneImage" Stretch="Fill" Height="160" Width="184" VerticalAlignment="Top" />
+        <Image x:Name="selectBorder" Width="184" Stretch="Fill" Height="160" Source="Assets/Images/selectborder.png"  VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Collapsed"/>
+        <TextBlock x:Name="sceneNameText" Text="场景二"  FontSize="25" Foreground="#bea47a" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,15" />
     </Grid>
 </UserControl>

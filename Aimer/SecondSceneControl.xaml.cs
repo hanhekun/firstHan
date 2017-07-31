@@ -45,27 +45,37 @@ namespace Aimer
             this.Visibility = Visibility.Collapsed;
         }
 
-        public void SetData(Scene scene, string sceneId)
+        public void SetData(List<Scene> list, Scene scene, string sceneId)
         {
+
             RemoveListener();
             mSceneId = sceneId; 
             scenePanel.Children.Clear();
-            Thickness margin = new Thickness(0, 0, 30, 0);
-            
-            SceneItem item1 = new SceneItem(); 
-            
-            item1.Margin = margin;
-            
-            item1.SetData(scene, 1);
+            Thickness margin = new Thickness(10, 40,10,0);
 
-            SceneItem item2 = new SceneItem();            
-            item2.SetData(scene, 2);
-            item2.Margin = margin;
-            SceneItem item3 = new SceneItem();
-            item3.SetData(scene, 3);
-            scenePanel.Children.Add(item1);
-            scenePanel.Children.Add(item2);
-            scenePanel.Children.Add(item3);
+            List<Uri> uri = new List<Uri>(); 
+            foreach (var myscene in list)
+            {
+                SceneItem item1 = new SceneItem();
+
+                item1.SetData(myscene, 1);
+                item1.Margin = margin;
+                SceneItem item2 = new SceneItem();
+                item2.SetData(myscene, 2);
+                item2.Margin = margin;
+
+                SceneItem item3 = new SceneItem();
+                item3.SetData(myscene, 3);
+                item3.Margin = margin;
+
+
+                scenePanel.Children.Add(item1);
+                scenePanel.Children.Add(item2);
+                scenePanel.Children.Add(item3);
+
+            }            
+            scrollViewer.ScrollToHorizontalOffset(612*(int.Parse( sceneId)-1));
+
             AddListener();
         }
 
@@ -112,5 +122,7 @@ namespace Aimer
 
             }
         }
+
+        
     }
 }

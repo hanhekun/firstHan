@@ -129,6 +129,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\AimerLogo.jpg" />
+    <Content Include="Assets\Images\AimerLogo.jpg" />
+    <Content Include="Assets\Images\closeBtn.png" />
     <Content Include="Assets\Images\greybg.png" />
     <Content Include="Assets\Images\quan.png" />
     <Content Include="Assets\Images\secondbg.png" />

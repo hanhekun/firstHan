@@ -117,7 +117,7 @@ namespace Aimer
             if (selectScenes.response == "getgoodsscene")
             {
                 string flag = selectScenes.flag;
-                CutButton(flag);
+                SelectScene(flag);
             }
             //MediaPlayerElement a = new MediaPlayerElement();
             
@@ -201,7 +201,7 @@ namespace Aimer
             }
         }
 
-        private void CutButton(string flag)
+        private void SelectScene(string flag)
         {
             foreach (ScenButton i in themeButtonPanel.Children)
             {
@@ -211,7 +211,7 @@ namespace Aimer
                     string id = i.GetSceneId ();
                     Scene sc = mAllScens[int.Parse(id)];
                     //i.Visibility = Visibility.Collapsed;
-                    secondSceneControl.SetData(sc,id);
+                    secondSceneControl.SetData(mAllScens,sc, id);
                     secondSceneControl.Show();
                     SendBtnAsync(id);
                 }
@@ -222,7 +222,7 @@ namespace Aimer
         {           
             SceneButtonEventArgs args = e as SceneButtonEventArgs;
             Scene selectedScene = mAllScens[int.Parse(args.SceneId)-1];
-            secondSceneControl.SetData(selectedScene, args.SceneId);
+            secondSceneControl.SetData(mAllScens,selectedScene, args.SceneId);
             secondSceneControl.Show();
 
             var SB = sender as ScenButton;
